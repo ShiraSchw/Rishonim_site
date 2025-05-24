@@ -1,46 +1,44 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rishonim.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# בסיס נתונים בזיכרון
-rishonim_data = {
-    "מסכתות": {
-        "זרעים": {
-            "ברכות": {
-                "תלמוד": []
-            }
-        }
-    }
-}
+db = SQLAlchemy(app)
+
+class Rishon(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String(100))
+    book_name = db.Column(db.String(100))
+    author_name = db.Column(db.String(100))
+    author_nickname = db.Column(db.String(100))
+    region = db.Column(db.String(100))
+    publication = db.Column(db.String(100))
 
 @app.route('/')
 def index():
-    return render_template("index.html", data=rishonim_data)
+    rishonim = Rishon.query.all()
+    return render_template("index.html", rishonim=rishonim)
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_rishon():
     if request.method == 'POST':
-        # נתונים מהטופס
-        category = request.form['category']
-        sub_category = request.form['sub_category']
-        section = request.form['section']
-        sub_section = request.form['sub_section']
-
-        rishon = {
-            'סיווג הספר': request.form['classification'],
-            'שם הספר': request.form['book_name'],
-            'שם הסופר': request.form['author_name'],
-            'כינוי הסופר': request.form['author_nickname'],
-            'שיוך': request.form['region'],
-            'היכן פורסם': request.form['published']
-        }
-
-        # הוספה למקום הנכון
-        rishonim_data.setdefault(category, {}).setdefault(sub_category, {}).setdefault(section, {}).setdefault(sub_section, []).append(rishon)
-        return redirect(url_for('index'))
-
+        new_rishon = Rishon(
+            category=request.form['category'],
+            book_name=request.form['book_name'],
+            author_name=request.form['author_name'],
+            author_nickname=request.form['author_nickname'],
+            region=request.form['region'],
+            publication=request.form['publication']
+        )
+        db.session.add(new_rishon)
+        db.session.commit()
+        return redirect('/')
     return render_template("add_rishon.html")
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
     app.run(host='0.0.0.0', port=10000)
 

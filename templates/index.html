@@ -24,7 +24,30 @@
 <body>
   <div class="container">
     <h1 class="mb-4 text-primary">חיפוש ראשונים לפי ספר</h1>
-    <!-- כאן יופיע התוכן של הדף -->
+	<a href="/add" class="btn btn-primary mb-3">הוסף ראשון חדש</a>
+
+{% if rishonim %}
+  <div class="row">
+    {% for r in rishonim %}
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ r.book_name }} ({{ r.category }})</h5>
+            <p class="card-text">
+              <strong>שם הסופר:</strong> {{ r.author_name }}<br>
+              <strong>כינוי:</strong> {{ r.author_nickname }}<br>
+              <strong>שיוך:</strong> {{ r.region }}<br>
+              <strong>היכן פורסם:</strong> {{ r.publication }}
+            </p>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>אין עדיין ראשונים במערכת.</p>
+{% endif %}
+
   </div>
 </body>
 </html>
