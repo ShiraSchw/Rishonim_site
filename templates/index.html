@@ -1,13 +1,39 @@
 <h1>רשימת ראשונים</h1>
-<a href="/add">הוסף ראשון חדש</a>
+<a href="/add">הוסף ראשון</a>
 
-{% for category, rishonim_in_category in data.items() %}
-  <h2>{{ category }}</h2>
-  {% for r in rishonim_in_category %}
-    <div>
-      <strong>{{ r.book_name }}</strong> מאת {{ r.author_name }} ({{ r.author_nickname }})<br>
-      שיוך: {{ r.region }}<br>
-      פורסם ב: {{ r.publication }}<br><br>
-    </div>
+{% for a, subs_a in tree.items() %}
+  <h2>{{ a }}</h2>
+  {% for b, subs_b in subs_a.items() %}
+    <h3 style="margin-right: 20px;">{{ b }}</h3>
+    {% for c, subs_c in subs_b.items() %}
+      {% if c == "_books" %}
+        {% for r in subs_c %}
+          <div style="margin-right: 40px;">
+            <strong>{{ r.book_name }}</strong> מאת {{ r.author_name }} ({{ r.author_nickname }})<br>
+            שיוך: {{ r.region }} | פורסם ב: {{ r.publication }}<br><br>
+          </div>
+        {% endfor %}
+      {% else %}
+        <h4 style="margin-right: 40px;">{{ c }}</h4>
+        {% for d, books in subs_c.items() %}
+          {% if d == "_books" %}
+            {% for r in books %}
+              <div style="margin-right: 60px;">
+                <strong>{{ r.book_name }}</strong> מאת {{ r.author_name }} ({{ r.author_nickname }})<br>
+                שיוך: {{ r.region }} | פורסם ב: {{ r.publication }}<br><br>
+              </div>
+            {% endfor %}
+          {% else %}
+            <h5 style="margin-right: 60px;">{{ d }}</h5>
+            {% for r in books %}
+              <div style="margin-right: 80px;">
+                <strong>{{ r.book_name }}</strong> מאת {{ r.author_name }} ({{ r.author_nickname }})<br>
+                שיוך: {{ r.region }} | פורסם ב: {{ r.publication }}<br><br>
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
   {% endfor %}
 {% endfor %}
