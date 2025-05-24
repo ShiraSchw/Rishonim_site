@@ -1,36 +1,85 @@
-<!DOCTYPE html>
-<html lang="he">
-<head>
-  <meta charset="UTF-8">
-  <title>הוסף ראשון</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-  <div class="container">
-    <h2>הוסף ראשון חדש</h2>
-    <form method="post">
-      <label>סיווג הספר:</label>
-      <input type="text" name="category" required>
+<form method="POST" action="{{ url_for('add_rishon') }}">
+  <label>קטגוריה:</label>
+  <select id="main-category" name="main_category" required></select>
 
-      <label>שם הספר:</label>
-      <input type="text" name="book_name" required>
+  <label>תת קטגוריה:</label>
+  <select id="sub-category" name="sub_category" required></select>
 
-      <label>שם הסופר:</label>
-      <input type="text" name="author_name" required>
+  <label>מסכת:</label>
+  <select id="tractate" name="tractate" required></select>
 
-      <label>כינוי הסופר:</label>
-      <input type="text" name="author_nickname" required>
+  <label>סוג טקסט:</label>
+  <select id="text-type" name="text_type" required></select>
 
-      <label>שיוך:</label>
-      <input type="text" name="origin" required>
+  <label>שם הספר:</label>
+  <input type="text" name="book_name" required>
 
-      <label>היכן פורסם:</label>
-      <input type="text" name="published" required>
+  <label>שם הסופר:</label>
+  <input type="text" name="author_name" required>
 
-      <button type="submit">שמור</button>
-    </form>
+  <label>כינוי הסופר:</label>
+  <input type="text" name="author_nickname" required>
 
-    <a class="back-link" href="{{ url_for('index') }}">← חזרה לדף הראשי</a>
-  </div>
-</body>
-</html>
+  <label>שיוך:</label>
+  <input type="text" name="region" required>
+
+  <label>היכן פורסם:</label>
+  <input type="text" name="published" required>
+
+  <br><button type="submit">הוסף ראשון</button>
+</form>
+
+<a href="{{ url_for('index') }}">← חזרה לדף הבית</a>
+
+<script>
+  const categoryTree = {{ category_tree | tojson }};
+
+  const mainCategory = document.getElementById('main-category');
+  const subCategory = document.getElementById('sub-category');
+  const tractate = document.getElementById('tractate');
+  const textType = document.getElementById('text-type');
+
+  function populateSelect(selectElem, options) {
+    selectElem.innerHTML = '';
+    for (const key in options) {
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.innerText = key;
+      selectElem.appendChild(opt);
+    }
+  }
+
+  function populateArraySelect(selectElem, array) {
+    selectElem.innerHTML = '';
+    for (const item of array) {
+      const opt = document.createElement('option');
+      opt.value = item;
+      opt.innerText = item;
+      selectElem.appendChild(opt);
+    }
+  }
+
+  mainCategory.addEventListener('change', () => {
+    const selected = mainCategory.value;
+    populateSelect(subCategory, categoryTree[selected]);
+    subCategory.dispatchEvent(new Event('change'));
+  });
+
+  subCategory.addEventListener('change', () => {
+    const selectedMain = mainCategory.value;
+    const selectedSub = subCategory.value;
+    populateSelect(tractate, categoryTree[selectedMain][selectedSub]);
+    tractate.dispatchEvent(new Event('change'));
+  });
+
+  tractate.addEventListener('change', () => {
+    const selectedMain = mainCategory.value;
+    const selectedSub = subCategory.value;
+    const selectedTractate = tractate.value;
+    populateArraySelect(textType, categoryTree[selectedMain][selectedSub][selectedTractate]);
+  });
+
+  // הפעלה ראשונית
+  populateSelect(mainCategory, categoryTree);
+  mainCategory.dispatchEvent(new Event('change'));
+</script>

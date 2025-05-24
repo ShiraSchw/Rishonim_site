@@ -1,0 +1,85 @@
+body {
+  font-family: 'Assistant', sans-serif;
+  background-color: #f7f9fc;
+  direction: rtl;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+h1, h2 {
+  text-align: center;
+  color: #003366;
+}
+
+.card {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  margin: 1rem 0;
+}
+
+label {
+  display: block;
+  margin-top: 1rem;
+  color: #003366;
+  font-weight: bold;
+}
+
+input[type="text"], select {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.25rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+}
+
+button {
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  margin-top: 1.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+button:hover {
+  background-color: #003d80;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 2rem;
+  text-decoration: none;
+  color: #0056b3;
+  font-weight: bold;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.category-block {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #d0d7e2;
+}
+
+.category-title {
+  font-weight: bold;
+  color: #002f5c;
+  margin-bottom: 0.5rem;
+}
+
+.subcategories {
+  margin-right: 1rem;

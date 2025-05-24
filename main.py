@@ -6,6 +6,9 @@ app = Flask(__name__)
 
 DATA_FILE = 'data.json'
 
+with open("categories.json", encoding="utf-8") as f:
+    category_tree = json.load(f)
+
 def load_data():
     if not os.path.exists(DATA_FILE):
         return []
@@ -66,8 +69,8 @@ def add_rishon():
         data = load_data()
         data.append(new_rishon)
         save_data(data)
-        return redirect('/')
-    return render_template("index.html", rishonim=rishonim, category_tree=category_tree)
+        return redirect(url_for('index'))
+    return render_template("add_rishon.html", category_tree=category_tree)
 
 
 if __name__ == '__main__':
