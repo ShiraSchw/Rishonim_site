@@ -1,39 +1,59 @@
-<h1>רשימת ראשונים</h1>
-<a href="/add">הוסף ראשון</a>
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>ראשונים על ספרים</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>מאגר ראשונים על ספרים</h1>
 
-{% for a, subs_a in tree.items() %}
-  <h2>{{ a }}</h2>
-  {% for b, subs_b in subs_a.items() %}
-    <h3 style="margin-right: 20px;">{{ b }}</h3>
-    {% for c, subs_c in subs_b.items() %}
-      {% if c == "_books" %}
-        {% for r in subs_c %}
-          <div style="margin-right: 40px;">
-            <strong>{{ r.book_name }}</strong> מאת {{ r.author_name }} ({{ r.author_nickname }})<br>
-            שיוך: {{ r.region }} | פורסם ב: {{ r.publication }}<br><br>
+    {% if category_tree %}
+      {% for main_cat, subcats in category_tree.items() %}
+        <div class="category-block">
+          <div class="category-title">{{ main_cat }}</div>
+          <div class="subcategories">
+            <ul>
+              {% for subcat, nested in subcats.items() %}
+                <li>{{ subcat }}
+                  {% if nested %}
+                    <ul>
+                      {% for inner, leaf in nested.items() %}
+                        <li>{{ inner }}
+                          {% if leaf %}
+                            <ul>
+                              {% for leaf_item in leaf %}
+                                <li>{{ leaf_item }}</li>
+                              {% endfor %}
+                            </ul>
+                          {% endif %}
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
           </div>
-        {% endfor %}
-      {% else %}
-        <h4 style="margin-right: 40px;">{{ c }}</h4>
-        {% for d, books in subs_c.items() %}
-          {% if d == "_books" %}
-            {% for r in books %}
-              <div style="margin-right: 60px;">
-                <strong>{{ r.book_name }}</strong> מאת {{ r.author_name }} ({{ r.author_nickname }})<br>
-                שיוך: {{ r.region }} | פורסם ב: {{ r.publication }}<br><br>
-              </div>
-            {% endfor %}
-          {% else %}
-            <h5 style="margin-right: 60px;">{{ d }}</h5>
-            {% for r in books %}
-              <div style="margin-right: 80px;">
-                <strong>{{ r.book_name }}</strong> מאת {{ r.author_name }} ({{ r.author_nickname }})<br>
-                שיוך: {{ r.region }} | פורסם ב: {{ r.publication }}<br><br>
-              </div>
-            {% endfor %}
-          {% endif %}
-        {% endfor %}
-      {% endif %}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <h2>רשימת ראשונים</h2>
+    {% for רשומה in rishonim %}
+    <div class="card">
+      <strong>שם הספר:</strong> {{ רשומה.book_name }}<br>
+      <strong>שם הסופר:</strong> {{ רשומה.author_name }} ({{ רשומה.author_nickname }})<br>
+      <strong>שיוך:</strong> {{ רשומה.origin }}<br>
+      <strong>פורסם ב:</strong> {{ רשומה.published }}<br>
+      <strong>סיווג:</strong> {{ רשומה.category }}
+    </div>
     {% endfor %}
-  {% endfor %}
-{% endfor %}
+
+    <a href="{{ url_for('add_rishon') }}">
+      <button>הוסף ראשון חדש</button>
+    </a>
+  </div>
+</body>
+</html>

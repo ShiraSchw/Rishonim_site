@@ -67,7 +67,7 @@ def add_rishon():
         data.append(new_rishon)
         save_data(data)
         return redirect('/')
-    return render_template("add_rishon.html", categories=load_categories())
+    return render_template("index.html", rishonim=rishonim, category_tree=category_tree)
 
 
 if __name__ == '__main__':
