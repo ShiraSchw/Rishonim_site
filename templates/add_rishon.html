@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <title>הוסף ראשון</title>
+</head>
+<body dir="rtl">
+    <h1>טופס הוספת ראשון</h1>
+    <form method="post">
+        קטגוריה ראשית: <input name="category"><br>
+        קטגוריית משנה: <input name="sub_category"><br>
+        קטגוריה שלישית: <input name="section"><br>
+        קטגוריה רביעית: <input name="sub_section"><br><br>
+
+        סיווג הספר: <input name="classification"><br>
+        שם הספר: <input name="book_name"><br>
+        שם הסופר: <input name="author_name"><br>
+        כינוי הסופר: <input name="author_nickname"><br>
+        שיוך: <input name="region"><br>
+        היכן פורסם: <input name="published"><br>
+        <button type="submit">שלח</button>
+    </form>
+
+    <a href="{{ url_for('index') }}">חזרה לדף הראשי</a>
+</body>
+</html>

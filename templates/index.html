@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <title>רשימת ראשונים</title>
+</head>
+<body dir="rtl">
+    <h1>רשימת ראשונים לפי קטגוריה</h1>
+    {% for category, subs in data.items() %}
+        <h2>{{ category }}</h2>
+        {% for sub, sections in subs.items() %}
+            <h3>{{ sub }}</h3>
+            {% for section, sub_sections in sections.items() %}
+                <h4>{{ section }}</h4>
+                {% for sub_section, rishonim in sub_sections.items() %}
+                    <h5>{{ sub_section }}</h5>
+                    <ul>
+                        {% for r in rishonim %}
+                            <li>
+                                <strong>{{ r["שם הספר"] }}</strong> מאת {{ r["שם הסופר"] }} ({{ r["כינוי הסופר"] }}), {{ r["שיוך"] }} - {{ r["היכן פורסם"] }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+
+    <a href="{{ url_for('add_rishon') }}">הוסף ראשון</a>
+</body>
+</html>
