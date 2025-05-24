@@ -1,44 +1,48 @@
 from flask import Flask, render_template, request, redirect
-from flask_sqlalchemy import SQLAlchemy
+import json
+import os
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rishonim.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+DATA_FILE = 'data.json'
 
-class Rishon(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    category = db.Column(db.String(100))
-    book_name = db.Column(db.String(100))
-    author_name = db.Column(db.String(100))
-    author_nickname = db.Column(db.String(100))
-    region = db.Column(db.String(100))
-    publication = db.Column(db.String(100))
+def load_data():
+    if not os.path.exists(DATA_FILE):
+        return []
+    with open(DATA_FILE, encoding='utf-8') as f:
+        return json.load(f)
+
+def save_data(data):
+    with open(DATA_FILE, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
 
 @app.route('/')
 def index():
-    rishonim = Rishon.query.all()
-    return render_template("index.html", rishonim=rishonim)
+    rishonim = load_data()
+    categories = {}
+    for r in rishonim:
+        cat = r['category']
+        if cat not in categories:
+            categories[cat] = []
+        categories[cat].append(r)
+    return render_template("index.html", data=categories)
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_rishon():
     if request.method == 'POST':
-        new_rishon = Rishon(
-            category=request.form['category'],
-            book_name=request.form['book_name'],
-            author_name=request.form['author_name'],
-            author_nickname=request.form['author_nickname'],
-            region=request.form['region'],
-            publication=request.form['publication']
-        )
-        db.session.add(new_rishon)
-        db.session.commit()
+        new_rishon = {
+            'category': request.form['category'],
+            'book_name': request.form['book_name'],
+            'author_name': request.form['author_name'],
+            'author_nickname': request.form['author_nickname'],
+            'region': request.form['region'],
+            'publication': request.form['publication']
+        }
+        data = load_data()
+        data.append(new_rishon)
+        save_data(data)
         return redirect('/')
     return render_template("add_rishon.html")
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(host='0.0.0.0', port=10000)
-
