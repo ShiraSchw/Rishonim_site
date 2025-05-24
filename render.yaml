@@ -1,9 +1,6 @@
 services:
   - type: web
-    name: rishonim-site
+    name: Rishonim_site
     env: python
-    buildCommand: ""
-    startCommand: "python app.py"
-    envVars:
-      - key: FLASK_ENV
-        value: production
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
