@@ -1,13 +1,78 @@
 <h1>הוסף ראשון</h1>
 <form method="post">
-  קטגוריה ראשית: <input type="text" name="main_category"><br>
-  קטגוריה משנית: <input type="text" name="sub_category"><br>
-  קטגוריה תת־משנית: <input type="text" name="sub_sub_category"><br>
-  קטגוריה רביעית (אם יש): <input type="text" name="sub_sub_sub_category"><br>
+  <label>קטגוריה ראשית:</label>
+  <select id="main_category" name="main_category" onchange="updateSub()"></select><br>
+
+  <label>קטגוריה משנית:</label>
+  <select id="sub_category" name="sub_category" onchange="updateSubSub()"></select><br>
+
+  <label>קטגוריה תת־משנית:</label>
+  <select id="sub_sub_category" name="sub_sub_category" onchange="updateSubSubSub()"></select><br>
+
+  <label>קטגוריה רביעית:</label>
+  <select id="sub_sub_sub_category" name="sub_sub_sub_category"></select><br><br>
+
   שם הספר: <input type="text" name="book_name"><br>
   שם הסופר: <input type="text" name="author_name"><br>
   כינוי הסופר: <input type="text" name="author_nickname"><br>
   שיוך: <input type="text" name="region"><br>
   היכן פורסם: <input type="text" name="publication"><br>
+
   <button type="submit">הוסף</button>
 </form>
+
+<script>
+  const categories = {{ categories|tojson }};
+
+  function updateSelect(select, options) {
+    select.innerHTML = '';
+    for (const key of Object.keys(options)) {
+      const opt = document.createElement('option');
+      opt.value = opt.textContent = key;
+      select.appendChild(opt);
+    }
+    if (!Object.keys(options).length) {
+      const opt = document.createElement('option');
+      opt.textContent = '-- אין --';
+      select.appendChild(opt);
+    }
+  }
+
+  function updateSub() {
+    const main = document.getElementById('main_category').value;
+    updateSelect(document.getElementById('sub_category'), categories[main] || {});
+    updateSubSub();
+  }
+
+  function updateSubSub() {
+    const main = document.getElementById('main_category').value;
+    const sub = document.getElementById('sub_category').value;
+    updateSelect(document.getElementById('sub_sub_category'), (categories[main] || {})[sub] || {});
+    updateSubSubSub();
+  }
+
+  function updateSubSubSub() {
+    const main = document.getElementById('main_category').value;
+    const sub = document.getElementById('sub_category').value;
+    const subsub = document.getElementById('sub_sub_category').value;
+    const final = (categories[main] || {})[sub]?.[subsub] || [];
+    const select = document.getElementById('sub_sub_sub_category');
+    select.innerHTML = '';
+    for (const value of final) {
+      const opt = document.createElement('option');
+      opt.value = opt.textContent = value;
+      select.appendChild(opt);
+    }
+    if (!final.length) {
+      const opt = document.createElement('option');
+      opt.textContent = '-- אין --';
+      select.appendChild(opt);
+    }
+  }
+
+  // Initialize
+  window.onload = () => {
+    updateSelect(document.getElementById('main_category'), categories);
+    updateSub();
+  };
+</script>

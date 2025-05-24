@@ -45,14 +45,18 @@ def index():
     return render_template("index.html", tree=tree)
 
 
+def load_categories():
+    with open('categories.json', encoding='utf-8') as f:
+        return json.load(f)
+
 @app.route('/add', methods=['GET', 'POST'])
 def add_rishon():
     if request.method == 'POST':
         new_rishon = {
             'main_category': request.form['main_category'],
-            'sub_category': request.form.get('sub_category'),
-            'sub_sub_category': request.form.get('sub_sub_category'),
-            'sub_sub_sub_category': request.form.get('sub_sub_sub_category'),
+            'sub_category': request.form['sub_category'],
+            'sub_sub_category': request.form['sub_sub_category'],
+            'sub_sub_sub_category': request.form['sub_sub_sub_category'],
             'book_name': request.form['book_name'],
             'author_name': request.form['author_name'],
             'author_nickname': request.form['author_nickname'],
@@ -63,7 +67,7 @@ def add_rishon():
         data.append(new_rishon)
         save_data(data)
         return redirect('/')
-    return render_template("add_rishon.html")
+    return render_template("add_rishon.html", categories=load_categories())
 
 
 if __name__ == '__main__':
