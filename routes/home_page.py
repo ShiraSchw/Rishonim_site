@@ -14,6 +14,7 @@ with open("data.json", encoding="utf-8") as f:
 def index():
     return render_template('index.html', category_tree=category_tree, rishonim=rishonim)
 
+@home_bp.route('/search')
 def search():
     category_path = request.args.get('category', '')
     path_parts = category_path.split('/')
