@@ -87,11 +87,11 @@ button:hover {
 
 .btn {
   display: inline-block;
-  padding: 8px 16px;
-  background-color: #4CAF50; /* ירוק לדוגמה */
+  padding: 0.75rem 1.5rem;
+  background-color: #0056b3
   color: white;
   text-decoration: none;
-  border-radius: 4px;
+  border-radius: 12px;
   font-weight: bold;
 }
 .btn:hover {
