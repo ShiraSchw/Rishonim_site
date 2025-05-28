@@ -1,82 +1,117 @@
 <!DOCTYPE html>
 <html lang="he">
 <head>
-  <meta charset="UTF-8">
-  <title>ראשונים על ספרים</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8" />
+  <title>בחירת קטגוריה והצגת ראשונים</title>
+  <style>
+    body { font-family: Arial, sans-serif; direction: rtl; }
+    select { margin: 5px; padding: 5px; }
+    #rishon-list { margin-top: 20px; }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>מאגר ראשונים על ספרים</h1>
+  <h1>בחר קטגוריה</h1>
 
-    {% if category_tree %}
-      {% for main_cat, subcats in category_tree.items() %}
-	<div id="category-tree">
-		<script>
-		  const categoryTree = {{ category_tree | tojson }};
-		  const container = document.getElementById('category-tree');
+  <div id="selectors-container"></div>
 
-		  function createCategoryNode(name, children) {
-			const wrapper = document.createElement('div');
-			wrapper.style.marginRight = '20px';
+  <div id="rishon-list"></div>
 
-			const item = document.createElement('div');
-			item.textContent = name;
-			item.style.cursor = 'pointer';
-			item.style.fontWeight = 'bold';
-			item.onclick = () => {
-			  if (subList.style.display === 'none') {
-				subList.style.display = 'block';
-			  } else {
-				subList.style.display = 'none';
-			  }
-			};
+  <script>
+    const categoryTree = {{ category_tree | tojson }};
+    const data = {{ data | tojson }};
 
-			const subList = document.createElement('div');
-			subList.style.display = 'none';
-			subList.style.marginRight = '20px';
+    const selectorsContainer = document.getElementById('selectors-container');
+    const rishonList = document.getElementById('rishon-list');
 
-			if (typeof children === 'object') {
-			  for (const [subName, subChildren] of Object.entries(children)) {
-				subList.appendChild(createCategoryNode(subName, subChildren));
-			  }
-			} else if (Array.isArray(children)) {
-			  for (const leaf of children) {
-				const leafDiv = document.createElement('div');
-				leafDiv.textContent = leaf;
-				leafDiv.style.marginRight = '20px';
-				leafDiv.style.cursor = 'pointer';
-				subList.appendChild(leafDiv);
-			  }
-			}
+    // מאחסן את המסלול שנבחר - שמות הקטגוריות שנבחרו בשכבות
+    let selectedPath = [];
 
-			wrapper.appendChild(item);
-			wrapper.appendChild(subList);
-			return wrapper;
-		  }
+    // פונקציה לבניית select חדש עם אפשרויות
+    function createSelect(options, level) {
+      const select = document.createElement('select');
+      select.dataset.level = level;
+      select.innerHTML = '<option value="">בחר...</option>';
 
-		  for (const [mainCat, subCats] of Object.entries(categoryTree)) {
-			container.appendChild(createCategoryNode(mainCat, subCats));
-		  }
-		</script>
-    </div>
-      {% endfor %}
-    {% endif %}
+      for (const key in options) {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = key;
+        select.appendChild(option);
+      }
 
-    <h2>רשימת ראשונים</h2>
-    {% for רשומה in rishonim %}
-    <div class="card">
-      <strong>שם הספר:</strong> {{ רשומה.book_name }}<br>
-      <strong>שם הסופר:</strong> {{ רשומה.author_name }} ({{ רשומה.author_nickname }})<br>
-      <strong>שיוך:</strong> {{ רשומה.origin }}<br>
-      <strong>פורסם ב:</strong> {{ רשומה.published }}<br>
-      <strong>סיווג:</strong> {{ רשומה.category }}
-    </div>
-    {% endfor %}
+      select.addEventListener('change', onCategoryChange);
+      return select;
+    }
 
-    <a href="{{ url_for('app_routes.add.add_rishon') }}">
-      <button>הוסף ראשון חדש</button>
-    </a>
-  </div>
+    // טיפול בבחירת קטגוריה ברמה מסוימת
+    function onCategoryChange(event) {
+      const select = event.target;
+      const level = parseInt(select.dataset.level);
+
+      // מעדכנים את המסלול לפי הבחירה - חותכים כל בחירה בשכבות גבוהות יותר
+      selectedPath = selectedPath.slice(0, level);
+      if (select.value) {
+        selectedPath[level] = select.value;
+      } else {
+        // אם בחרו "בחר..." - מסירים בחירה ברמה הזו
+        selectedPath = selectedPath.slice(0, level);
+      }
+
+      // מוחקים selectים מתחת לרמה הנוכחית
+      while (selectorsContainer.children.length > level + 1) {
+        selectorsContainer.removeChild(selectorsContainer.lastChild);
+      }
+
+      // מוצאים את העץ בקטגוריה שנבחרה כדי לבדוק אם יש תתי קטגוריות
+      let node = categoryTree;
+      for (const p of selectedPath) {
+        if (!node) break;
+        node = node[p];
+      }
+
+      // אם יש תתי קטגוריות והם לא מערך (כלומר יש תתי קטגוריות ולא "רשימת טקסטים")
+      if (node && typeof node === 'object' && !Array.isArray(node)) {
+        // יוצרים select חדש לתתי הקטגוריות
+        const newSelect = createSelect(node, level + 1);
+        selectorsContainer.appendChild(newSelect);
+        rishonList.innerHTML = '';  // מנקים את הרשימה כי בחרנו עוד
+      } else {
+        // הגענו לקטגוריה סופית, מוצאים ומציגים את הראשונים התואמים
+        showRishonByCategory(selectedPath);
+      }
+    }
+
+    // פונקציה שמוצאת את הראשונים לפי מסלול קטגוריות
+    function showRishonByCategory(categoryPath) {
+      // נניח ש"הסיווג" (category) ב־data הוא מחרוזת עם המקטעים מופרדים ב־" > " (אפשר לשנות לפי איך שמירת)
+      // לכן נבדוק אם path של הספר מתחיל בדיוק כמו categoryPath.
+
+      // קודם מייצרים מחרוזת מופרדת ב־" > "
+      const categoryPathStr = categoryPath.join(' > ');
+
+      // מסננים את הנתונים שמתחילים בקטגוריה הזו
+      const filtered = data.filter(item => {
+        // נניח ששם השדה הוא "סיווג הספר" ומכיל מחרוזת עם המסלול
+        return item['סיווג הספר'].startsWith(categoryPathStr);
+      });
+
+      if (filtered.length === 0) {
+        rishonList.innerHTML = '<p>לא נמצאו ראשונים לקטגוריה הזו.</p>';
+        return;
+      }
+
+      let html = '<h2>ראשונים לקטגוריה: ' + categoryPathStr + '</h2><ul>';
+      for (const rishon of filtered) {
+        html += `<li><strong>${rishon['שם הספר']}</strong> - ${rishon['שם הסופר']} (${rishon['כינוי הסופר']})<br>שיוך: ${rishon['שיוך']}, היכן פורסם: ${rishon['היכן פורסם']}</li>`;
+      }
+      html += '</ul>';
+      rishonList.innerHTML = html;
+    }
+
+    // אתחול - יוצרים select ראשון עם הקטגוריות הראשיות
+    const firstSelect = createSelect(categoryTree, 0);
+    selectorsContainer.appendChild(firstSelect);
+
+  </script>
 </body>
 </html>
