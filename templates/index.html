@@ -73,7 +73,7 @@
         } else {
           data.forEach(rishon => {
             const div = document.createElement('div');
-            div.innerHTML = `<strong>${rishon.book_name}</strong> - ${rishon.author_name}`;
+            div.innerHTML = `</strong> ${rishon.book_name} - ${rishon.author_nickname} (${rishon.author_name}), ${rishon.region}, ${rishon.publication}`;
             resultsContainer.appendChild(div);
           });
         }
