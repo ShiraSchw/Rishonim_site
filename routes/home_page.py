@@ -21,7 +21,7 @@ def search():
 
     filtered = []
     for r in rishonim:
-        cat_path = [r['main_category'], r['sub_category'], r['tractate']]
+        cat_path = [r['main_category'], r['sub_category'], r['tractate'], r.get('text_type', '')]
         if path_parts == cat_path[:len(path_parts)]:
             filtered.append(r)
 
