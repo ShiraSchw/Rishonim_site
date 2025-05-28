@@ -1,5 +1,7 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, jsonify
 import json
+
+from urllib3.contrib.emscripten import request
 
 home_bp = Blueprint('home', __name__)
 
@@ -12,3 +14,15 @@ with open("data.json", encoding="utf-8") as f:
 @home_bp.route('/')
 def index():
     return render_template('index.html', category_tree=category_tree, rishonim=rishonim)
+
+def search():
+    category_path = request.args.get('category', '')
+    path_parts = category_path.split('/')
+
+    filtered = []
+    for r in rishonim:
+        cat_path = [r['main_category'], r['sub_category'], r['tractate']]
+        if path_parts == cat_path[:len(path_parts)]:
+            filtered.append(r)
+
+    return jsonify(filtered)

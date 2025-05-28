@@ -8,106 +8,76 @@
 <body>
   <h1>בחר קטגוריה</h1>
 
-  <div id="selectors-container"></div>
+  <div id="category-container"></div>
 
-  <div id="rishon-list"></div>
+<!-- כפתור חפש שמופיע רק כשהקטגוריה סופית נבחרה -->
+<button id="search-button" style="display: none;">חפש</button>
 
-  <script>
-    const categoryTree = {{ category_tree | tojson }};
-    const data = {{ rishonim | tojson }};
+<div id="results-container"></div>
 
-    const selectorsContainer = document.getElementById('selectors-container');
-    const rishonList = document.getElementById('rishon-list');
+<script>
+  const categoryTree = {{ category_tree | tojson }};
+  let selectedPath = [];
 
-    // מאחסן את המסלול שנבחר - שמות הקטגוריות שנבחרו בשכבות
-    let selectedPath = [];
+  const container = document.getElementById('category-container');
+  const searchBtn = document.getElementById('search-button');
+  const resultsContainer = document.getElementById('results-container');
 
-    // פונקציה לבניית select חדש עם אפשרויות
-    function createSelect(options, level) {
-      const select = document.createElement('select');
-      select.dataset.level = level;
-      select.innerHTML = '<option value="">בחר...</option>';
+  function createSelect(levelData, levelIndex) {
+    // מחק קטגוריות מתחת לרמה זו
+    const selects = container.querySelectorAll('select');
+    selects.forEach((sel, i) => {
+      if (i >= levelIndex) sel.remove();
+    });
 
-      for (const key in options) {
-        const option = document.createElement('option');
-        option.value = key;
-        option.textContent = key;
-        select.appendChild(option);
-      }
-
-      select.addEventListener('change', onCategoryChange);
-      return select;
+    // צור תפריט חדש
+    const select = document.createElement('select');
+    select.innerHTML = '<option disabled selected>בחר</option>';
+    for (const key in levelData) {
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = key;
+      select.appendChild(opt);
     }
+    container.appendChild(select);
 
-    // טיפול בבחירת קטגוריה ברמה מסוימת
-    function onCategoryChange(event) {
-      const select = event.target;
-      const level = parseInt(select.dataset.level);
+    // הסתר כפתור חפש עד שנדע אם זה סופי
+    searchBtn.style.display = 'none';
 
-      // מעדכנים את המסלול לפי הבחירה - חותכים כל בחירה בשכבות גבוהות יותר
-      selectedPath = selectedPath.slice(0, level);
-      if (select.value) {
-        selectedPath[level] = select.value;
+    select.addEventListener('change', () => {
+      selectedPath = Array.from(container.querySelectorAll('select')).map(sel => sel.value);
+      const currentLevel = selectedPath.reduce((obj, key) => obj?.[key], categoryTree);
+
+      if (typeof currentLevel === 'object' && Object.keys(currentLevel).length > 0) {
+        // יש עוד רמה – צור עוד select
+        createSelect(currentLevel, levelIndex + 1);
       } else {
-        // אם בחרו "בחר..." - מסירים בחירה ברמה הזו
-        selectedPath = selectedPath.slice(0, level);
+        // אין עוד – זו קטגוריה סופית → הצג כפתור חפש
+        searchBtn.style.display = 'inline-block';
       }
+    });
+  }
 
-      // מוחקים selectים מתחת לרמה הנוכחית
-      while (selectorsContainer.children.length > level + 1) {
-        selectorsContainer.removeChild(selectorsContainer.lastChild);
-      }
+  createSelect(categoryTree, 0);
 
-      // מוצאים את העץ בקטגוריה שנבחרה כדי לבדוק אם יש תתי קטגוריות
-      let node = categoryTree;
-      for (const p of selectedPath) {
-        if (!node) break;
-        node = node[p];
-      }
-
-      // אם יש תתי קטגוריות והם לא מערך (כלומר יש תתי קטגוריות ולא "רשימת טקסטים")
-      if (node && typeof node === 'object' && !Array.isArray(node)) {
-        // יוצרים select חדש לתתי הקטגוריות
-        const newSelect = createSelect(node, level + 1);
-        selectorsContainer.appendChild(newSelect);
-        rishonList.innerHTML = '';  // מנקים את הרשימה כי בחרנו עוד
-      } else {
-        // הגענו לקטגוריה סופית, מוצאים ומציגים את הראשונים התואמים
-        showRishonByCategory(selectedPath);
-      }
-    }
-
-    // פונקציה שמוצאת את הראשונים לפי מסלול קטגוריות
-    function showRishonByCategory(categoryPath) {
-      // נניח ש"הסיווג" (category) ב־data הוא מחרוזת עם המקטעים מופרדים ב־" > " (אפשר לשנות לפי איך שמירת)
-      // לכן נבדוק אם path של הספר מתחיל בדיוק כמו categoryPath.
-
-      // קודם מייצרים מחרוזת מופרדת ב־" > "
-      const categoryPathStr = categoryPath.join(' > ');
-
-      // מסננים את הנתונים שמתחילים בקטגוריה הזו
-      const filtered = data.filter(item => {
-        // נניח ששם השדה הוא "סיווג הספר" ומכיל מחרוזת עם המסלול
-        return item['סיווג הספר'].startsWith(categoryPathStr);
+  // שלח בקשה לשרת
+  searchBtn.addEventListener('click', () => {
+    const category = selectedPath.join('/');
+    fetch(`/search?category=${encodeURIComponent(category)}`)
+      .then(res => res.json())
+      .then(data => {
+        resultsContainer.innerHTML = '';
+        if (data.length === 0) {
+          resultsContainer.innerHTML = '<p>לא נמצאו ראשונים</p>';
+        } else {
+          data.forEach(rishon => {
+            const div = document.createElement('div');
+            div.innerHTML = `<strong>${rishon.book_name}</strong> - ${rishon.author_name}`;
+            resultsContainer.appendChild(div);
+          });
+        }
       });
-
-      if (filtered.length === 0) {
-        rishonList.innerHTML = '<p>לא נמצאו ראשונים לקטגוריה הזו.</p>';
-        return;
-      }
-
-      let html = '<h2>ראשונים לקטגוריה: ' + categoryPathStr + '</h2><ul>';
-      for (const rishon of filtered) {
-        html += `<li><strong>${rishon['שם הספר']}</strong> - ${rishon['שם הסופר']} (${rishon['כינוי הסופר']})<br>שיוך: ${rishon['שיוך']}, היכן פורסם: ${rishon['היכן פורסם']}</li>`;
-      }
-      html += '</ul>';
-      rishonList.innerHTML = html;
-    }
-
-    // אתחול - יוצרים select ראשון עם הקטגוריות הראשיות
-    const firstSelect = createSelect(categoryTree, 0);
-    selectorsContainer.appendChild(firstSelect);
-
-  </script>
+  });
+</script>
 </body>
 </html>
