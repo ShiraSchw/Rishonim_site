@@ -1,4 +1,4 @@
-<form method="POST" action="{{ url_for('add_rishon') }}">
+<form method="POST" action="{{ url_for('add.add_rishon') }}">
   <label>קטגוריה:</label>
   <select id="main-category" name="main_category" required></select>
 
@@ -29,7 +29,7 @@
   <br><button type="submit">הוסף ראשון</button>
 </form>
 
-<a href="{{ url_for('index') }}">← חזרה לדף הבית</a>
+<a href="{{ url_for('home.index') }}">← חזרה לדף הבית</a>
 
 <script>
   const categoryTree = {{ category_tree | tojson }};
