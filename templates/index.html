@@ -11,32 +11,55 @@
 
     {% if category_tree %}
       {% for main_cat, subcats in category_tree.items() %}
-        <div class="category-block">
-          <div class="category-title">{{ main_cat }}</div>
-          <div class="subcategories">
-            <ul>
-              {% for subcat, nested in subcats.items() %}
-                <li>{{ subcat }}
-                  {% if nested %}
-                    <ul>
-                      {% for inner, leaf in nested.items() %}
-                        <li>{{ inner }}
-                          {% if leaf %}
-                            <ul>
-                              {% for leaf_item in leaf %}
-                                <li>{{ leaf_item }}</li>
-                              {% endfor %}
-                            </ul>
-                          {% endif %}
-                        </li>
-                      {% endfor %}
-                    </ul>
-                  {% endif %}
-                </li>
-              {% endfor %}
-            </ul>
-          </div>
-        </div>
+	<div id="category-tree">
+		<script>
+		  const categoryTree = {{ category_tree | tojson }};
+		  const container = document.getElementById('category-tree');
+
+		  function createCategoryNode(name, children) {
+			const wrapper = document.createElement('div');
+			wrapper.style.marginRight = '20px';
+
+			const item = document.createElement('div');
+			item.textContent = name;
+			item.style.cursor = 'pointer';
+			item.style.fontWeight = 'bold';
+			item.onclick = () => {
+			  if (subList.style.display === 'none') {
+				subList.style.display = 'block';
+			  } else {
+				subList.style.display = 'none';
+			  }
+			};
+
+			const subList = document.createElement('div');
+			subList.style.display = 'none';
+			subList.style.marginRight = '20px';
+
+			if (typeof children === 'object') {
+			  for (const [subName, subChildren] of Object.entries(children)) {
+				subList.appendChild(createCategoryNode(subName, subChildren));
+			  }
+			} else if (Array.isArray(children)) {
+			  for (const leaf of children) {
+				const leafDiv = document.createElement('div');
+				leafDiv.textContent = leaf;
+				leafDiv.style.marginRight = '20px';
+				leafDiv.style.cursor = 'pointer';
+				subList.appendChild(leafDiv);
+			  }
+			}
+
+			wrapper.appendChild(item);
+			wrapper.appendChild(subList);
+			return wrapper;
+		  }
+
+		  for (const [mainCat, subCats] of Object.entries(categoryTree)) {
+			container.appendChild(createCategoryNode(mainCat, subCats));
+		  }
+		</script>
+    </div>
       {% endfor %}
     {% endif %}
 
