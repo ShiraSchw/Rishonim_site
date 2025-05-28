@@ -1,85 +1,93 @@
-<form method="POST" action="{{ url_for('app_routes.add.add_rishon') }}">
-  <label>קטגוריה:</label>
-  <select id="main-category" name="main_category" required></select>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>הוסף ראשון</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+	<form method="POST" action="{{ url_for('app_routes.add.add_rishon') }}">
+	  <label>קטגוריה:</label>
+	  <select id="main-category" name="main_category" required></select>
 
-  <label>תת קטגוריה:</label>
-  <select id="sub-category" name="sub_category" required></select>
+	  <label>תת קטגוריה:</label>
+	  <select id="sub-category" name="sub_category" required></select>
 
-  <label>מסכת:</label>
-  <select id="tractate" name="tractate" required></select>
+	  <label>מסכת:</label>
+	  <select id="tractate" name="tractate" required></select>
 
-  <label>סוג טקסט:</label>
-  <select id="text-type" name="text_type" required></select>
+	  <label>סוג טקסט:</label>
+	  <select id="text-type" name="text_type" required></select>
 
-  <label>שם הספר:</label>
-  <input type="text" name="book_name" required>
+	  <label>שם הספר:</label>
+	  <input type="text" name="book_name" required>
 
-  <label>שם הסופר:</label>
-  <input type="text" name="author_name" required>
+	  <label>שם הסופר:</label>
+	  <input type="text" name="author_name" required>
 
-  <label>כינוי הסופר:</label>
-  <input type="text" name="author_nickname" required>
+	  <label>כינוי הסופר:</label>
+	  <input type="text" name="author_nickname" required>
 
-  <label>שיוך:</label>
-  <input type="text" name="region" required>
+	  <label>שיוך:</label>
+	  <input type="text" name="region" required>
 
-  <label>היכן פורסם:</label>
-  <input type="text" name="published" required>
+	  <label>היכן פורסם:</label>
+	  <input type="text" name="published" required>
 
-  <br><button type="submit">הוסף ראשון</button>
-</form>
+	  <br><button type="submit">הוסף ראשון</button>
+	</form>
 
-<a href="{{ url_for('app_routes.home.index') }}">← חזרה לדף הבית</a>
+	<a href="{{ url_for('app_routes.home.index') }}">← חזרה לדף הבית</a>
 
-<script>
-  const categoryTree = {{ category_tree | tojson }};
+	<script>
+	  const categoryTree = {{ category_tree | tojson }};
 
-  const mainCategory = document.getElementById('main-category');
-  const subCategory = document.getElementById('sub-category');
-  const tractate = document.getElementById('tractate');
-  const textType = document.getElementById('text-type');
+	  const mainCategory = document.getElementById('main-category');
+	  const subCategory = document.getElementById('sub-category');
+	  const tractate = document.getElementById('tractate');
+	  const textType = document.getElementById('text-type');
 
-  function populateSelect(selectElem, options) {
-    selectElem.innerHTML = '';
-    for (const key in options) {
-      const opt = document.createElement('option');
-      opt.value = key;
-      opt.innerText = key;
-      selectElem.appendChild(opt);
-    }
-  }
+	  function populateSelect(selectElem, options) {
+		selectElem.innerHTML = '';
+		for (const key in options) {
+		  const opt = document.createElement('option');
+		  opt.value = key;
+		  opt.innerText = key;
+		  selectElem.appendChild(opt);
+		}
+	  }
 
-  function populateArraySelect(selectElem, array) {
-    selectElem.innerHTML = '';
-    for (const item of array) {
-      const opt = document.createElement('option');
-      opt.value = item;
-      opt.innerText = item;
-      selectElem.appendChild(opt);
-    }
-  }
+	  function populateArraySelect(selectElem, array) {
+		selectElem.innerHTML = '';
+		for (const item of array) {
+		  const opt = document.createElement('option');
+		  opt.value = item;
+		  opt.innerText = item;
+		  selectElem.appendChild(opt);
+		}
+	  }
 
-  mainCategory.addEventListener('change', () => {
-    const selected = mainCategory.value;
-    populateSelect(subCategory, categoryTree[selected]);
-    subCategory.dispatchEvent(new Event('change'));
-  });
+	  mainCategory.addEventListener('change', () => {
+		const selected = mainCategory.value;
+		populateSelect(subCategory, categoryTree[selected]);
+		subCategory.dispatchEvent(new Event('change'));
+	  });
 
-  subCategory.addEventListener('change', () => {
-    const selectedMain = mainCategory.value;
-    const selectedSub = subCategory.value;
-    populateSelect(tractate, categoryTree[selectedMain][selectedSub]);
-    tractate.dispatchEvent(new Event('change'));
-  });
+	  subCategory.addEventListener('change', () => {
+		const selectedMain = mainCategory.value;
+		const selectedSub = subCategory.value;
+		populateSelect(tractate, categoryTree[selectedMain][selectedSub]);
+		tractate.dispatchEvent(new Event('change'));
+	  });
 
-  tractate.addEventListener('change', () => {
-    const selectedMain = mainCategory.value;
-    const selectedSub = subCategory.value;
-    const selectedTractate = tractate.value;
-    populateArraySelect(textType, categoryTree[selectedMain][selectedSub][selectedTractate]);
-  });
+	  tractate.addEventListener('change', () => {
+		const selectedMain = mainCategory.value;
+		const selectedSub = subCategory.value;
+		const selectedTractate = tractate.value;
+		populateArraySelect(textType, categoryTree[selectedMain][selectedSub][selectedTractate]);
+	  });
 
-  // הפעלה ראשונית
-  populateSelect(mainCategory, categoryTree);
-  mainCategory.dispatchEvent(new Event('change'));
-</script>
+	  // הפעלה ראשונית
+	  populateSelect(mainCategory, categoryTree);
+	  mainCategory.dispatchEvent(new Event('change'));
+	</script>
+<body>
