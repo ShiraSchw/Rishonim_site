@@ -1,77 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
-import json
-import os
+from flask import Flask
+from routes import app_routes
 
 app = Flask(__name__)
-
-DATA_FILE = 'data.json'
-
-with open("categories.json", encoding="utf-8") as f:
-    category_tree = json.load(f)
-
-def load_data():
-    if not os.path.exists(DATA_FILE):
-        return []
-    with open(DATA_FILE, encoding='utf-8') as f:
-        return json.load(f)
-
-def save_data(data):
-    with open(DATA_FILE, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=2)
-
-@app.route('/')
-def index():
-    rishonim = load_data()
-
-    tree = {}
-    for r in rishonim:
-        a = r['main_category']
-        b = r.get('sub_category')
-        c = r.get('sub_sub_category')
-        d = r.get('sub_sub_sub_category')
-
-        tree.setdefault(a, {})
-        if b:
-            tree[a].setdefault(b, {})
-            if c:
-                tree[a][b].setdefault(c, {})
-                if d:
-                    tree[a][b][c].setdefault(d, [])
-                    tree[a][b][c][d].append(r)
-                else:
-                    tree[a][b][c].setdefault('_books', []).append(r)
-            else:
-                tree[a][b].setdefault('_books', []).append(r)
-        else:
-            tree[a].setdefault('_books', []).append(r)
-
-    return render_template("index.html", tree=tree)
-
-
-def load_categories():
-    with open('categories.json', encoding='utf-8') as f:
-        return json.load(f)
-
-@app.route('/add', methods=['GET', 'POST'])
-def add_rishon():
-    if request.method == 'POST':
-        new_rishon = {
-            'main_category': request.form['main_category'],
-            'sub_category': request.form['sub_category'],
-            'sub_sub_category': request.form['sub_sub_category'],
-            'sub_sub_sub_category': request.form['sub_sub_sub_category'],
-            'book_name': request.form['book_name'],
-            'author_name': request.form['author_name'],
-            'author_nickname': request.form['author_nickname'],
-            'region': request.form['region'],
-            'publication': request.form['publication']
-        }
-        data = load_data()
-        data.append(new_rishon)
-        save_data(data)
-        return redirect(url_for('index'))
-    return render_template("add_rishon.html", category_tree=category_tree)
-
+app.register_blueprint(app_routes)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000)
+    app.run(debug=True)
