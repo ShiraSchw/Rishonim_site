@@ -36,7 +36,7 @@
 	  <br><button type="submit">הוסף ראשון</button>
 	</form>
 
-	<button href="{{ url_for('app_routes.home.index') }}">← חזרה לדף הבית</button>
+	<a href="{{ url_for('app_routes.home.index') }}">← חזרה לדף הבית</a>
 
 	<script>
 	  const categoryTree = {{ category_tree | tojson }};

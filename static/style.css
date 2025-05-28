@@ -83,3 +83,17 @@ button:hover {
 
 .subcategories {
   margin-right: 1rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #4CAF50; /* ירוק לדוגמה */
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+}
+.btn:hover {
+  background-color: #45a049;
+}
