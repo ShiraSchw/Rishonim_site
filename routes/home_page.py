@@ -1,7 +1,6 @@
-from flask import Blueprint, render_template, jsonify
+from flask import Blueprint, render_template, jsonify, request
 import json
 
-from urllib3.contrib.emscripten import request
 
 home_bp = Blueprint('home', __name__)
 
