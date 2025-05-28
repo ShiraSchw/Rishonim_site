@@ -12,11 +12,11 @@
 	  <label>תת קטגוריה:</label>
 	  <select id="sub-category" name="sub_category" required></select>
 
-	  <label>מסכת:</label>
-	  <select id="tractate" name="tractate" required></select>
+	  <label>תת תת קטגוריה:</label>
+	  <select id="sub-sub-category" name="sub_sub_category" required></select>
 
-	  <label>סוג טקסט:</label>
-	  <select id="text-type" name="text_type" required></select>
+	  <label>תת תת תת קטגוריה:</label>
+	  <select id="sub-sub-sub-category" name="sub_sub_sub_category" required></select>
 
 	  <label>שם הספר:</label>
 	  <input type="text" name="book_name" required>
@@ -43,8 +43,8 @@
 
 	  const mainCategory = document.getElementById('main-category');
 	  const subCategory = document.getElementById('sub-category');
-	  const tractate = document.getElementById('tractate');
-	  const textType = document.getElementById('text-type');
+	  const subsubCategory = document.getElementById('sub-sub-category');
+	  const subsubsubCategory = document.getElementById('sub-sub-sub-category');
 
 	  function populateSelect(selectElem, options) {
 		selectElem.innerHTML = '';
@@ -75,15 +75,15 @@
 	  subCategory.addEventListener('change', () => {
 		const selectedMain = mainCategory.value;
 		const selectedSub = subCategory.value;
-		populateSelect(tractate, categoryTree[selectedMain][selectedSub]);
-		tractate.dispatchEvent(new Event('change'));
+		populateSelect(subCategory, categoryTree[selectedMain][selectedSub]);
+		subsubCategory.dispatchEvent(new Event('change'));
 	  });
 
-	  tractate.addEventListener('change', () => {
+	  subsubCategory.addEventListener('change', () => {
 		const selectedMain = mainCategory.value;
 		const selectedSub = subCategory.value;
-		const selectedTractate = tractate.value;
-		populateArraySelect(textType, categoryTree[selectedMain][selectedSub][selectedTractate]);
+		const selectedSubsub = subsubCategory.value;
+		populateArraySelect(subsubsubCategory, categoryTree[selectedMain][selectedSub][selectedSubsub]);
 	  });
 
 	  // הפעלה ראשונית
