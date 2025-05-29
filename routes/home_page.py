@@ -6,17 +6,18 @@ from routes.web_function import build_rishonim_category_tree
 
 home_bp = Blueprint('home', __name__)
 
-with open(DATA_FILE, encoding="utf-8") as f:
-    rishonim = json.load(f)
-
-rishonim_category_tree = build_rishonim_category_tree(rishonim)
-
 @home_bp.route('/')
 def index():
+    with open(DATA_FILE, encoding="utf-8") as f:
+        rishonim = json.load(f)
+    rishonim_category_tree = build_rishonim_category_tree(rishonim)
     return render_template('index.html', category_tree=rishonim_category_tree, rishonim=rishonim)
 
 @home_bp.route('/search')
 def search():
+    with open(DATA_FILE, encoding="utf-8") as f:
+        rishonim = json.load(f)
+
     category_path = request.args.get('category', '')
     path_parts = category_path.split('/')
 
