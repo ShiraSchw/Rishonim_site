@@ -133,12 +133,12 @@
       const selectedSubsub = subsubCategory.value;
       const subsubsubTree = categoryTree[selectedMain]?.[selectedSub]?.[selectedSubsub];
 
-      if (Array.isArray(subsubsubTree) && subsubsubTree.length > 0) {
-        subsubsubContainer.style.display = 'block';
-        populateArraySelect(subsubsubCategory, subsubsubTree);
-      } else {
-        subsubsubContainer.style.display = 'none';
-      }
+	  if (subsubsubTree && typeof subsubsubTree === 'object' && Object.keys(subsubsubTree).length > 0) {
+		subsubsubContainer.style.display = 'block';
+		populateSelect(subsubsubCategory, subsubsubTree);
+	  } else {
+		subsubsubContainer.style.display = 'none';
+	  }
     });
 
     // הפעלה ראשונית
