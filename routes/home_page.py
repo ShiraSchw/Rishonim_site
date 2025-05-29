@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, jsonify, request
 import json
+
+from routes.constants import DATA_FILE
 from routes.web_function import build_rishonim_category_tree
 
 home_bp = Blueprint('home', __name__)
 
-with open("data.json", encoding="utf-8") as f:
+with open(DATA_FILE, encoding="utf-8") as f:
     rishonim = json.load(f)
 
 rishonim_category_tree = build_rishonim_category_tree(rishonim)

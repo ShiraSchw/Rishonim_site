@@ -2,19 +2,21 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 import json
 import os
 
+from routes.constants import CATEGORY_FILE, DATA_FILE
+
 add_bp = Blueprint('add', __name__)
 
 @add_bp.route('/add', methods=['GET', 'POST'])
 def add_rishon():
     # קריאה לעץ הקטגוריות
-    with open("categories.json", encoding="utf-8") as f:
+    with open(CATEGORY_FILE, encoding="utf-8") as f:
         category_tree = json.load(f)
 
     if request.method == 'POST':
         # בדיקה בסיסית
         if not request.form.get("main_category"):
             flash("חובה לבחור קטגוריה ראשית.", "error")
-            return redirect(url_for('add.add_rishon'))
+            return redirect(url_for('app_routes.add.add_rishon'))
 
         # בניית האובייקט של ה'ראשון'
         new_rishon = {
@@ -31,10 +33,10 @@ def add_rishon():
 
         # קריאה ל־data.json ושמירה
         try:
-            if not os.path.exists("data.json"):
+            if not os.path.exists(DATA_FILE):
                 data = []
             else:
-                with open("data.json", "r", encoding="utf-8") as f:
+                with open(DATA_FILE, "r", encoding="utf-8") as f:
                     try:
                         data = json.load(f)
                     except json.JSONDecodeError:
@@ -42,7 +44,7 @@ def add_rishon():
 
             data.append(new_rishon)
 
-            with open("data.json", "w", encoding="utf-8") as f:
+            with open(DATA_FILE, "w", encoding="utf-8") as f:
                 json.dump(data, f, indent=2, ensure_ascii=False)
 
             flash("הראשון נוסף בהצלחה!", "success")
