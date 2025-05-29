@@ -46,11 +46,11 @@ def add_rishon():
                 json.dump(data, f, indent=2, ensure_ascii=False)
 
             flash("הראשון נוסף בהצלחה!", "success")
-            return redirect(url_for('add.add_rishon'))
+            return redirect(url_for('app_routes.add.add_rishon'))
 
         except Exception as e:
             flash(f"שגיאה בשמירת הנתונים: {str(e)}", "error")
-            return redirect(url_for('add.add_rishon'))
+            return redirect(url_for('app_routes.add.add_rishon'))
 
     # GET רגיל
     return render_template('add_rishon.html', category_tree=category_tree)
