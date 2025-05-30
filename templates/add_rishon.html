@@ -2,7 +2,7 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>הוסף ראשון</title>
+  <title>הוסף ספר</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <style>
     #sub-category-container,
@@ -71,7 +71,7 @@
     <button type="submit">הוסף ראשון</button>
   </form>
 
-  <a href="{{ url_for('app_routes.home.index') }}" class="btn">← חזרה לדף הבית</a>
+  <a href="{{ url_for('app_routes.home.home') }}" class="btn">← חזרה לדף הבית</a>
 
   <script>
     const categoryTree = {{ category_tree | tojson }};
