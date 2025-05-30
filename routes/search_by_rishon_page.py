@@ -6,7 +6,7 @@ from routes.web_function import build_rishonim_category_tree
 
 search_by_rishon_bp = Blueprint('search_by_rishon', __name__)
 
-@search_by_rishon_bp.route('/')
+@search_by_rishon_bp.route('/search_by_rishon_home')
 def search_by_rishon_home():
     with open(DATA_FILE, encoding="utf-8") as f:
         rishonim_with_books = json.load(f)
@@ -23,7 +23,7 @@ def search_by_rishon_home():
     rishonim_category_tree = build_rishonim_category_tree(rishonim_with_books)
     return render_template('search_by_rishon_home.html', category_tree=rishonim_category_tree, rishonim=rishonim_with_books)
 
-@search_by_rishon_bp.route('/search')
+@search_by_rishon_bp.route('search_by_rishon_home/search')
 def search_by_rishon():
     with open(DATA_FILE, encoding="utf-8") as f:
         rishonim = json.load(f)
