@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8" />
+  <title>בחירת קטגוריה והצגת ראשונים</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<a href="{{ url_for('app_routes.add.add_rishon') }}" class="btn">← הוסף ראשון</a>
+<a href="{{ url_for('app_routes.home.home') }}" class="btn">← חזרה לדף הבית</a>
+  <h1>בחר קטגוריה</h1>
+
+  <div id="category-container"></div>
+
+<!-- כפתור חפש שמופיע רק כשהקטגוריה סופית נבחרה -->
+<button id="search-button" style="display: none;">חפש</button>
+
+<div id="results-container"></div>
+
+<script>
+  const categoryTree = {{ category_tree | tojson }};
+  let selectedPath = [];
+
+  const container = document.getElementById('category-container');
+  const searchBtn = document.getElementById('search-button');
+  const resultsContainer = document.getElementById('results-container');
+
+  function createSelect(levelData, levelIndex) {
+    // מחק קטגוריות מתחת לרמה זו
+    const selects = container.querySelectorAll('select');
+    selects.forEach((sel, i) => {
+      if (i >= levelIndex) sel.remove();
+    });
+
+    // צור תפריט חדש
+    const select = document.createElement('select');
+    select.innerHTML = '<option disabled selected>בחר</option>';
+    for (const key in levelData) {
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = key;
+      select.appendChild(opt);
+    }
+    container.appendChild(select);
+
+    // הסתר כפתור חפש עד שנדע אם זה סופי
+    searchBtn.style.display = 'none';
+
+    select.addEventListener('change', () => {
+      selectedPath = Array.from(container.querySelectorAll('select')).map(sel => sel.value);
+      const currentLevel = selectedPath.reduce((obj, key) => obj?.[key], categoryTree);
+
+      if (typeof currentLevel === 'object' && Object.keys(currentLevel).length > 0) {
+        // יש עוד רמה – צור עוד select
+        createSelect(currentLevel, levelIndex + 1);
+      } else {
+        // אין עוד – זו קטגוריה סופית → הצג כפתור חפש
+        searchBtn.style.display = 'inline-block';
+      }
+    });
+  }
+
+  createSelect(categoryTree, 0);
+
+  // שלח בקשה לשרת
+  searchBtn.addEventListener('click', () => {
+    const category = selectedPath.join('/');
+    fetch("{{ url_for('app_routes.search_by_rishon.search') }}?category=" + encodeURIComponent(category))
+      .then(res => res.json())
+      .then(data => {
+        resultsContainer.innerHTML = '';
+        if (data.length === 0) {
+          resultsContainer.innerHTML = '<p>לא נמצאו ראשונים</p>';
+        } else {
+		  data.forEach(rishon => {
+		    const card = document.createElement('div');
+		    card.className = 'rishon-card';
+		    card.innerHTML = `
+			  <div class="title">${rishon.book_name}</div>
+			  <div><strong>שם:</strong> ${rishon.author_name}</div>
+			  ${rishon.author_fullname ? `<div><strong>כינוי:</strong> (${rishon.fullname})</div>` : ''}
+			  ${rishon.region ? `<div><strong>אזור:</strong> ${rishon.region}</div>` : ''}
+			  ${rishon.publication ? `<div><strong>פרסום:</strong> ${rishon.publication}</div>` : ''}
+		    `;
+		    resultsContainer.appendChild(card);
+          });
+        }
+      });
+  });
+</script>
+</body>
+</html>

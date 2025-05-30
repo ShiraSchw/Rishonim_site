@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <title>חיפוש ראשונים</title>
+    <style>
+        body {
+            direction: rtl;
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #333;
+        }
+
+        .button-container {
+            margin-top: 40px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 20px 40px;
+            margin: 20px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 20px;
+            background-color: #4a90e2;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .button:hover {
+            background-color: #357ab7;
+        }
+    </style>
+</head>
+<body>
+    <h1>איך ברצונך לחפש?</h1>
+    <div class="button-container">
+        <a href="{{ url_for('app_routes.search_by_book.search') }}" class="button">חיפוש לפי ספר</a>
+        <a href="{{ url_for('app_routes.search_by_rishon.search') }}" class="button">חיפוש לפי ראשון</a>
+    </div>
+</body>
+</html>
