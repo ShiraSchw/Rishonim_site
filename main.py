@@ -4,7 +4,7 @@ from flask import Flask, redirect
 
 from routes import app_routes
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 app.secret_key = 'your-secret-key'
 
 app.register_blueprint(app_routes, url_prefix='/app')
