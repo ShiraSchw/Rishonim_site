@@ -18,7 +18,7 @@ def index():
     # הוספת כינוי ואזור לכל ראשון
     for r in rishonim_with_books:
         name = r.get("author_name", "")
-        r.update(rishonim_list.get(name, {"nickname": "", "region": ""}))
+        r.update(rishonim_list.get(name, {"fullname": "", "region": ""}))
 
     rishonim_category_tree = build_rishonim_category_tree(rishonim_with_books)
     return render_template('index.html', category_tree=rishonim_category_tree, rishonim=rishonim_with_books)
@@ -44,7 +44,7 @@ def search():
         ]
         if path_parts == cat_path[:len(path_parts)]:
             enriched = r.copy()
-            enriched.update(rishonim_extra.get(r.get("author_name", ""), {"nickname": "", "region": ""}))
+            enriched.update(rishonim_extra.get(r.get("author_name", ""), {"fullname": "", "region": ""}))
             filtered.append(enriched)
 
     return jsonify(filtered)
