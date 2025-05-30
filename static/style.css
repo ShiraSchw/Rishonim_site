@@ -107,3 +107,19 @@ button:hover {
   margin-bottom: 20px;
   border-radius: 8px;
 }
+
+.rishon-card {
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+  background-color: #f7f7f7;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+  direction: rtl;
+}
+.rishon-card .title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
