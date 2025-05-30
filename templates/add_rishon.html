@@ -25,6 +25,16 @@
 <body>
 
   <h1>הוסף ראשון חדש</h1>
+  
+	{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+		<ul class="flash-messages">
+		  {% for message in messages %}
+			<li>{{ message }}</li>
+		  {% endfor %}
+		</ul>
+	  {% endif %}
+	{% endwith %}
 
   <form method="POST" action="{{ url_for('app_routes.add.add_rishon') }}">
     <label>קטגוריה:</label>
@@ -48,14 +58,12 @@
     <label>שם הספר:</label>
     <input type="text" name="book_name" required>
 
-    <label>שם הסופר:</label>
-    <input type="text" name="author_name" required>
-
-    <label>כינוי הסופר:</label>
-    <input type="text" name="author_nickname" required>
-
-    <label>שיוך גיאוגרפי:</label>
-    <input type="text" name="region" required>
+	<label for="rishon">בחר ראשון:</label>
+	<select id="rishon" name="author_name" required>
+	  {% for rishon in rishon_options %}
+		<option value="{{ rishon }}">{{ rishon }}</option>
+	  {% endfor %}
+	</select>
 
     <label>פרסום:</label>
     <input type="text" name="published" required>
@@ -146,13 +154,4 @@
     mainCategory.dispatchEvent(new Event('change'));
   </script>
 </body>
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class="flash-messages">
-      {% for message in messages %}
-        <li>{{ message }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
 </html>
