@@ -65,7 +65,7 @@
   // שלח בקשה לשרת
   searchBtn.addEventListener('click', () => {
     const category = selectedPath.join('/');
-    fetch("{{ url_for('app_routes.search_by_rishon.search') }}?category=" + encodeURIComponent(category))
+    fetch("{{ url_for('app_routes.search_by_rishon.search_by_rishon') }}?category=" + encodeURIComponent(category))
       .then(res => res.json())
       .then(data => {
         resultsContainer.innerHTML = '';
