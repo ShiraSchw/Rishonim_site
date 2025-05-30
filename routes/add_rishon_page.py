@@ -19,7 +19,7 @@ def add_rishon():
     if request.method == 'POST':
         if not request.form.get("main_category"):
             flash("חובה לבחור קטגוריה ראשית.", "error")
-            return redirect(url_for('add.add_rishon'))
+            return redirect(url_for('app_routes.add.add_rishon'))
 
         new_rishon = {
             "main_category": request.form.get("main_category"),
@@ -47,11 +47,11 @@ def add_rishon():
                 json.dump(data, f, indent=2, ensure_ascii=False)
 
             flash("הראשון נוסף בהצלחה!", "success")
-            return redirect(url_for('add.add_rishon'))
+            return redirect(url_for('app_routes.add.add_rishon'))
 
         except Exception as e:
             flash(f"שגיאה בשמירת הנתונים: {str(e)}", "error")
-            return redirect(url_for('add.add_rishon'))
+            return redirect(url_for('app_routes.add.add_rishon'))
 
     # אם זו בקשת GET רגילה
     return render_template('add_rishon.html', category_tree=category_tree, rishon_options=rishon_names)

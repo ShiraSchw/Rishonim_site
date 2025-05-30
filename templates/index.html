@@ -76,8 +76,8 @@
 		    card.className = 'rishon-card';
 		    card.innerHTML = `
 			  <div class="title">${rishon.book_name}</div>
-			  <div><strong>שם ראשון:</strong> ${rishon.author_name}</div>
-			  ${rishon.author_nickname ? `<div><strong>כינוי:</strong> ${rishon.author_nickname}</div>` : ''}
+			  <div><strong>שם:</strong> ${rishon.author_name}</div>
+			  ${rishon.author_nickname ? `<div><strong>כינוי:</strong> (${rishon.nickname})</div>` : ''}
 			  ${rishon.region ? `<div><strong>אזור:</strong> ${rishon.region}</div>` : ''}
 			  ${rishon.publication ? `<div><strong>פרסום:</strong> ${rishon.publication}</div>` : ''}
 		    `;
