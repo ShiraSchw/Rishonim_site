@@ -34,6 +34,8 @@ def add_book():
         logging.info("ראשונים:", len(rishonim), rishonim)
 
     except Exception as e:
+        logging.basicConfig(level=logging.INFO)
+        logging.info("הגעתי לפה באסה!!")
         print("שגיאה בשליפת קטגוריות או ראשונים:", e)
         categories = []
         rishonim = []
