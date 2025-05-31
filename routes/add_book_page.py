@@ -1,11 +1,13 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from supabase_client import supabase
+import logging
 
 add_book_bp = Blueprint('add_book', __name__)
 
 @add_book_bp.route('/add_book', methods=['GET', 'POST'])
 def add_book():
-    print("cndd")
+    logging.basicConfig(level=logging.INFO)
+    logging.info("הגעתי לפה!")
     if request.method == 'POST':
         category_id = request.form.get('category_id')
         rishon_id = request.form.get('rishon_id')
@@ -25,10 +27,11 @@ def add_book():
     try:
         categories = supabase.table('"Categories"').select("*").execute().data
         rishonim = supabase.table('"Rishonim"').select("*").execute().data
-        print("nxdkvln.")
+        logging.basicConfig(level=logging.INFO)
+        logging.info("הגעתי לפה!!")
 
-        print("קטגוריות:", len(categories), categories)
-        print("ראשונים:", len(rishonim), rishonim)
+        logging.basicConfig(level=logging.INFO)
+        logging.info("ראשונים:", len(rishonim), rishonim)
 
     except Exception as e:
         print("שגיאה בשליפת קטגוריות או ראשונים:", e)
