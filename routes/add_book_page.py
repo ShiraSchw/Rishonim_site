@@ -22,6 +22,6 @@ def add_book():
 
     # שליפת אפשרויות לרשימות הנפתחות
     categories = supabase.table("Categories").select("*").execute().data
-    rishonim = supabase.table("rishonim").select("*").execute().data
+    rishonim = supabase.table("Rishonim").select("*").execute().data
 
     return render_template('add_book.html', categories=categories, rishonim=rishonim)
