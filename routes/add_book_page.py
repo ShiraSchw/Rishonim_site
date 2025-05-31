@@ -21,10 +21,16 @@ def add_book():
         return redirect(url_for('app_routes.home'))
 
     # שליפת אפשרויות לרשימות הנפתחות
-    categories = supabase.table('Categories').select("*").execute().data
-    rishonim = supabase.table('Rishonim').select("*").execute().data
+    try:
+        categories = supabase.table('"Categories"').select("*").execute().data
+        rishonim = supabase.table('"Rishonim"').select("*").execute().data
 
-    print("קטגוריות:", len(categories), categories)
-    print("ראשונים:", len(rishonim), rishonim)
+        print("קטגוריות:", len(categories), categories)
+        print("ראשונים:", len(rishonim), rishonim)
+
+    except Exception as e:
+        print("שגיאה בשליפת קטגוריות או ראשונים:", e)
+        categories = []
+        rishonim = []
 
     return render_template('add_book.html', categories=categories, rishonim=rishonim)
