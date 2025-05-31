@@ -5,6 +5,7 @@ add_book_bp = Blueprint('add_book', __name__)
 
 @add_book_bp.route('/add_book', methods=['GET', 'POST'])
 def add_book():
+    print("cndd")
     if request.method == 'POST':
         category_id = request.form.get('category_id')
         rishon_id = request.form.get('rishon_id')
@@ -24,6 +25,7 @@ def add_book():
     try:
         categories = supabase.table('"Categories"').select("*").execute().data
         rishonim = supabase.table('"Rishonim"').select("*").execute().data
+        print("nxdkvln.")
 
         print("קטגוריות:", len(categories), categories)
         print("ראשונים:", len(rishonim), rishonim)
