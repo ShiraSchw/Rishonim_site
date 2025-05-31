@@ -24,4 +24,7 @@ def add_book():
     categories = supabase.table("Categories").select("*").execute().data
     rishonim = supabase.table("Rishonim").select("*").execute().data
 
+    print(categories)
+    print(rishonim)
+
     return render_template('add_book.html', categories=categories, rishonim=rishonim)
