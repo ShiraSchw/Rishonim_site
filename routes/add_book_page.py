@@ -21,7 +21,7 @@ def add_book():
         return redirect(url_for('app_routes.home'))
 
     # שליפת אפשרויות לרשימות הנפתחות
-    categories = supabase.table("categories").select("*").execute().data
+    categories = supabase.table("Categories").select("*").execute().data
     rishonim = supabase.table("rishonim").select("*").execute().data
 
     return render_template('add_book.html', categories=categories, rishonim=rishonim)

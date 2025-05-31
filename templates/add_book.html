@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>הוסף ספר</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
 <form method="POST">
   <label>קטגוריה:</label>
   <select name="category_id" required>
@@ -21,3 +30,7 @@
 
   <button type="submit">הוסף ספר</button>
 </form>
+
+  <a href="{{ url_for('app_routes.home.home') }}" class="btn">← חזרה לדף הבית</a>
+
+<body>
