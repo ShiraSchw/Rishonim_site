@@ -1,0 +1,23 @@
+<form method="POST">
+  <label>קטגוריה:</label>
+  <select name="category_id" required>
+    {% for cat in categories %}
+      <option value="{{ cat.id }}">{{ cat.category }}{% if cat.sub_category %} / {{ cat.sub_category }}{% endif %}{% if cat.sub_sub_category %} / {{ cat.sub_sub_category }}{% endif %}</option>
+    {% endfor %}
+  </select>
+
+  <label>ראשון:</label>
+  <select name="rishon_id" required>
+    {% for r in rishonim %}
+      <option value="{{ r.id }}">{{ r.name }} - {{ r.full_name }}</option>
+    {% endfor %}
+  </select>
+
+  <label>שם הספר:</label>
+  <input type="text" name="book_name" required>
+
+  <label>איפה פורסם:</label>
+  <input type="text" name="publication_place" required>
+
+  <button type="submit">הוסף ספר</button>
+</form>
