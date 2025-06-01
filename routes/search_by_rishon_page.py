@@ -7,11 +7,10 @@ search_by_rishon_bp = Blueprint('search_by_rishon', __name__)
 # דף הבית עם עץ קטגוריות
 @search_by_rishon_bp.route('/search_by_book')
 def search_by_rishon_home():
-    def search_by_rishon_home():
-        # שליפת כל הראשונים (name + full_name)
-        rishonim = supabase.table("Rishonim").select("id, name, full_name").order("name", desc=False).execute().data
+    # שליפת כל הראשונים (name + full_name)
+    rishonim = supabase.table("Rishonim").select("id, name, full_name").order("name", desc=False).execute().data
 
-        return render_template("search_by_rishon_home.html", rishonim=rishonim)
+    return render_template("search_by_rishon_home.html", rishonim=rishonim)
 
 
 # שליפת תוצאות לפי נתיב קטגוריה
