@@ -8,7 +8,7 @@ search_by_book_bp = Blueprint('search_by_book', __name__)
 @search_by_book_bp.route('/search_by_book')
 def search_by_book_home():
     # שליפת כל הקטגוריות
-    categories = supabase.table("Category").select("*").execute().data
+    categories = supabase.table('Categories').select("*").execute().data
 
     # בניית עץ קטגוריות בפורמט מתאים
     category_tree = {}
@@ -50,7 +50,7 @@ def search_by_book():
 
     # שליפת רשימת כל הראשונים (לפי id)
     rishon_ids = list(set(book['rishon_id'] for book in books if book.get('rishon_id')))
-    rishon_query = supabase.table("Rishonim").select("*").in_("id", rishon_ids).execute()
+    rishon_query = supabase.table('Rishonim').select("*").execute()
     rishon_map = {r['id']: r for r in rishon_query.data}
 
     results = []
