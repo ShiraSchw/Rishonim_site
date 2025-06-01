@@ -2,11 +2,10 @@
 <html lang="he">
 <head>
   <meta charset="UTF-8" />
-  <title>חיפוש לפי ראשון</title>
+  <title>חיפוש לפי ספר</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<a href="{{ url_for('app_routes.add.add_rishon') }}" class="btn">← הוסף ראשון</a>
 <a href="{{ url_for('app_routes.home.home') }}" class="btn">← חזרה לדף הבית</a>
   <h1>בחר קטגוריה</h1>
 
@@ -65,25 +64,25 @@
   // שלח בקשה לשרת
   searchBtn.addEventListener('click', () => {
     const category = selectedPath.join('/');
-    fetch("{{ url_for('app_routes.search_by_rishon.search_by_rishon') }}?category=" + encodeURIComponent(category))
+    fetch("{{ url_for('app_routes.search_by_book.search_by_book') }}?category=" + encodeURIComponent(category))
       .then(res => res.json())
       .then(data => {
         resultsContainer.innerHTML = '';
         if (data.length === 0) {
           resultsContainer.innerHTML = '<p>לא נמצאו ראשונים</p>';
         } else {
-		  data.forEach(rishon => {
+		  data.forEach(item => {
 		    const card = document.createElement('div');
 		    card.className = 'rishon-card';
 		    card.innerHTML = `
-			  <div class="title">${rishon.book_name}</div>
-			  <div><strong>שם:</strong> ${rishon.author_name}</div>
-			  ${rishon.author_fullname ? `<div><strong>כינוי:</strong> (${rishon.fullname})</div>` : ''}
-			  ${rishon.region ? `<div><strong>אזור:</strong> ${rishon.region}</div>` : ''}
-			  ${rishon.publication ? `<div><strong>פרסום:</strong> ${rishon.publication}</div>` : ''}
+			  <div class="title">${item.book_name}</div>
+			  ${item.name ? `<div><strong>ראשון:</strong> ${item.name}</div>` : ''}
+			  ${item.full_name ? `<div><strong>שם מלא:</strong> ${item.full_name}</div>` : ''}
+			  ${item.beit_midrash ? `<div><strong>בית מדרש:</strong> ${item.beit_midrash}</div>` : ''}
+			  ${item.publication_place ? `<div><strong>מקום פרסום:</strong> ${item.publication_place}</div>` : ''}
 		    `;
 		    resultsContainer.appendChild(card);
-          });
+		  });
         }
       });
   });
