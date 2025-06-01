@@ -7,6 +7,9 @@
 </head>
 <body>
 <a href="{{ url_for('app_routes.add_book.add_book') }}" class="btn">הוסף ספר</a>
+<a href="{{ url_for('app_routes.search_by_book.search_by_book_home') }}" class="btn">חיפוש לפי ספר</a>
+<a href="{{ url_for('app_routes.search_by_rishon.search_by_rishon_home') }}" class="btn">חיפוש לפי ראשון</a>
+<a href="{{ url_for('app_routes.search_by_beit_midrash.search_by_beit_midrash_home') }}" class="btn">חיפוש לפי בית מדרש</a>
     <h1>איך ברצונך לחפש?</h1>
     <div class="button-container">
         <a href="{{ url_for('app_routes.search_by_book.search_by_book_home') }}" class="btn">חיפוש לפי ספר</a>
