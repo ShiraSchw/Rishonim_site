@@ -13,7 +13,7 @@ def add_book():
         book_name = request.form.get('book_name')
         publication_place = request.form.get('publication_place')
 
-        supabase.table("books").insert({
+        supabase.table('Books').insert({
             "category_id": category_id,
             "rishon_id": rishon_id,
             "book_name": book_name,
