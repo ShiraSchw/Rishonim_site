@@ -41,7 +41,7 @@
       const id = select.value;
       if (!id) return;
 
-      fetch(`/search_by_rishon/search?rishon_id=${id}`)
+      fetch("{{ url_for('search_by_rishon.search_by_rishon') }}" + "?rishon_id=" + encodeURIComponent(id))
         .then(res => res.json())
         .then(data => {
           resultsContainer.innerHTML = '';

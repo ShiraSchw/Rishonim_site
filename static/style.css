@@ -1,28 +1,19 @@
 /* בסיס */
 body {
   font-family: 'Assistant', sans-serif;
-  background-image: url("/static/background_rishonim.jpg");
-  background-size: cover;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-  background-position: center;
+  background-color: #f0eee9; /* צבע רקע בהיר בגוון חום-ירוק עתיק */
   direction: rtl;
   margin: 0;
   padding: 20px;
-  color: #3A3A3A; /* קצת כהה יותר לקריאה נוחה */
+  color: #3a3a33; /* חום-ירוק כהה */
   text-align: right;
-  backdrop-filter: brightness(0.93) saturate(1.1);
-  background-color: rgba(250, 245, 240, 0.6); /* מעט שכבת צבע חם מתחת לתמונה */
-  min-height: 100vh;
 }
 
 /* כותרות */
 h1, h2 {
   text-align: center;
-  color: #5A4A36; /* חום עתיק מעט כהה יותר */
-  margin-bottom: 1.75rem;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-  font-weight: 700;
+  color: #4a5039; /* חום ירקרק כהה */
+  margin-bottom: 1.5rem;
 }
 
 /* מבנה כללי */
@@ -30,24 +21,21 @@ h1, h2 {
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem;
-  background-color: rgba(245, 241, 235, 0.85); /* לבן מחמם עם שקיפות */
-  border-radius: 14px;
-  box-shadow: 0 8px 20px rgba(90, 74, 54, 0.15);
 }
 
 /* כרטיסים */
 .card, .rishon-card {
-  background-color: rgba(245, 241, 235, 0.9); /* עדין, שמנת */
-  border-radius: 14px;
-  box-shadow: 0 5px 15px rgba(48, 84, 115, 0.12); /* צל כחול עדין */
-  padding: 1.75rem;
-  margin: 1.2rem 0;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  border: 1px solid #BFC7C1; /* גבול ירקרק-אפור עדין */
+  background-color: rgba(240, 240, 230, 0.9); /* רקע בהיר ויפה */
+  border-radius: 6px; /* פחות מעוגל */
+  box-shadow: 0 3px 10px rgba(50, 50, 40, 0.1);
+  padding: 1.5rem;
+  margin: 1rem 0;
+  transition: transform 0.15s ease-in-out;
+  border: 1px solid #7c8a65;
 }
 .rishon-card:hover {
   transform: scale(1.03);
-  box-shadow: 0 10px 25px rgba(48, 84, 115, 0.25);
+  border-color: #59673d;
 }
 
 /* כותרת בתוך כרטיס */
@@ -55,102 +43,81 @@ h1, h2 {
   font-weight: 700;
   font-size: 1.4em;
   margin-bottom: 10px;
-  color: #2E4A6D; /* כחול עתיק עשיר */
-  letter-spacing: 0.03em;
-  text-shadow: 0 0 3px rgba(80, 130, 170, 0.3);
+  color: #39585a; /* כחול-ירוק כהה */
 }
 
 /* תוויות */
 label {
   display: block;
-  margin-top: 1.2rem;
-  font-weight: 700;
-  color: #5A4A36; /* חום כהה עתיק */
-  font-size: 1.05rem;
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #4a5039;
 }
 
 /* טפסים */
 input[type="text"], select {
   width: 100%;
-  padding: 0.85rem 1rem;
-  margin-top: 0.3rem;
-  border: 1.8px solid #8D9A8F; /* ירוק-אפור עתיק */
-  border-radius: 8px;
-  background-color: #F1EFE9; /* שמנת בהירה */
-  font-size: 1.1rem;
-  color: #3A3A3A;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: inset 1px 1px 3px rgba(255 255 255 / 0.8);
-}
-input[type="text"]:focus, select:focus {
-  border-color: #2E4A6D; /* כחול עתיק */
-  box-shadow: 0 0 6px rgba(46, 74, 109, 0.6);
-  outline: none;
+  padding: 0.6rem;
+  margin-top: 0.25rem;
+  border: 1px solid #a3b09e;
+  border-radius: 4px;
+  background-color: #faf9f5;
+  font-size: 1rem;
+  color: #3a3a33;
 }
 
-/* כפתורים */
+/* כפתורים - שקופים ופינות חדות */
 button, .btn {
-  background: linear-gradient(135deg, #7C5A41, #A1785C); /* חום עם דינמיות */
-  color: #F7F5F2;
-  border: none;
-  padding: 0.85rem 1.7rem;
-  font-size: 1.1rem;
-  border-radius: 8px;
+  background: rgba(161, 120, 92, 0.3); /* חום חם שקוף */
+  color: #4a5039;
+  border: 2px solid rgba(161, 120, 92, 0.6);
+  padding: 0.6rem 1.4rem;
+  font-size: 1rem;
+  border-radius: 0; /* פינות חדות */
   cursor: pointer;
   font-weight: 700;
-  box-shadow: 0 5px 12px rgba(124, 90, 65, 0.5);
-  transition: background 0.35s ease, transform 0.22s ease, box-shadow 0.35s ease;
-  user-select: none;
+  transition: background 0.25s ease, border-color 0.25s ease;
 }
+
 button:hover, .btn:hover {
-  background: linear-gradient(135deg, #5A432F, #7C5A41);
-  transform: scale(1.06);
-  box-shadow: 0 8px 22px rgba(90, 67, 47, 0.7);
+  background: rgba(124, 90, 65, 0.5);
+  border-color: rgba(124, 90, 65, 0.8);
+  color: #fff;
 }
 
 /* קישור חזור */
 .back-link {
   display: inline-block;
-  margin-top: 2.3rem;
+  margin-top: 2rem;
   text-decoration: none;
-  color: #5A4A36;
+  color: #4a5039;
   font-weight: 700;
-  font-size: 1.05rem;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 .back-link:hover {
-  color: #2E4A6D;
-  text-shadow: 0 0 6px rgba(46, 74, 109, 0.7);
   text-decoration: underline;
 }
 
 /* בלוק קטגוריה */
 .category-block {
-  margin: 1.7rem 0;
-  padding: 1.25rem;
-  background-color: rgba(245, 241, 235, 0.92);
-  border: 1.5px solid #9EAA9D; /* ירוק-אפור עתיק */
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(158, 170, 157, 0.25);
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: rgba(240, 240, 230, 0.9);
+  border: 1px solid #a3b09e;
+  border-radius: 6px;
 }
 .category-title {
   font-weight: 700;
-  color: #2E4A6D;
-  margin-bottom: 0.65rem;
-  font-size: 1.15rem;
-  letter-spacing: 0.02em;
+  color: #39585a;
+  margin-bottom: 0.5rem;
 }
 
 /* הודעות */
 .flash-messages {
   list-style: none;
-  padding: 12px 18px;
-  background-color: #DCE6E9; /* כחול-ירוק בהיר */
-  border: 1.5px solid #86A4AB;
-  color: #2F4858;
-  margin-bottom: 22px;
-  border-radius: 8px;
-  font-weight: 600;
-  box-shadow: 0 2px 7px rgba(134, 164, 171, 0.4);
-  letter-spacing: 0.01em;
+  padding: 10px;
+  background-color: #dde6e1;
+  border: 1px solid #aec6bb;
+  color: #2f4843;
+  margin-bottom: 20px;
+  border-radius: 6px;
 }

@@ -1,7 +1,5 @@
-import httpx
 from flask import Blueprint, render_template, request, jsonify
 from supabase_client import supabase, KEY_TABLE
-import os
 
 search_by_book_bp = Blueprint('search_by_book', __name__)
 

@@ -40,7 +40,7 @@
     const b = select.value;
     if (!b) return;
 
-    fetch(`/search_by_beit_midrash/search?beit_midrash=${encodeURIComponent(b)}`)
+    fetch("{{ url_for('search_by_beit_midrash.search_by_beit_midrash') }}" + "?beit_midrash=" + encodeURIComponent(b))
       .then(res => res.json())
       .then(data => {
         resultsContainer.innerHTML = '';
