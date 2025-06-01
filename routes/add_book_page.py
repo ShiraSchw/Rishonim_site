@@ -7,8 +7,6 @@ logging.basicConfig(level=logging.INFO)
 
 @add_book_bp.route('/add_book', methods=['GET', 'POST'])
 def add_book():
-    logging.basicConfig(level=logging.INFO)
-    logging.info("הגעתי לפה!")
     if request.method == 'POST':
         category_id = request.form.get('category_id')
         rishon_id = request.form.get('rishon_id')
@@ -22,20 +20,14 @@ def add_book():
             "publication_place": publication_place
         }).execute()
 
-        return redirect(url_for('app_routes.home'))
+        return redirect(url_for('app_routes.add_book.add_book'))
 
     # שליפת אפשרויות לרשימות הנפתחות
     try:
         categories = supabase.table('Categories').select("*").execute().data
         rishonim = supabase.table('Rishonim').select("*").execute().data
 
-        logging.info("הגעתי לפה!!")
-        logging.info(f"ראשונים: {len(rishonim)} {rishonim}")
-
     except Exception as e:
-
-        logging.info("הגעתי לפה באסה!!")
-        print("שגיאה בשליפת קטגוריות או ראשונים:", e)
         categories = []
         rishonim = []
 
