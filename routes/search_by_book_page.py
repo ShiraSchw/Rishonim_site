@@ -24,10 +24,10 @@ def search_by_book_home():
         category_tree.setdefault(cat, {})
 
         if sub:
-            category_tree[cat].setdefault(sub, [])
+            category_tree[cat].setdefault(sub, {})
 
             if subsub:
-                category_tree[cat][sub].setdefault(subsub, [])
+                category_tree[cat][sub].setdefault(subsub, {})
 
     return render_template("search_by_book_home.html", category_tree=category_tree)
 
