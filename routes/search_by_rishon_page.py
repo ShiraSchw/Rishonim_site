@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, jsonify, request
 import json
 
 from routes.constants import DATA_FILE, RISHONIM_FILE
-from routes.web_function import build_rishonim_category_tree
 
 search_by_rishon_bp = Blueprint('search_by_rishon', __name__)
 
@@ -13,15 +12,9 @@ def search_by_rishon_home():
 
     # קריאה ל־rishonim.json
     with open(RISHONIM_FILE, encoding="utf-8") as f:
-        rishonim_list = json.load(f)
+        rishonim = json.load(f)
 
-    # הוספת כינוי ואזור לכל ראשון
-    for r in rishonim_with_books:
-        name = r.get("author_name", "")
-        r.update(rishonim_list.get(name, {"fullname": "", "region": ""}))
-
-    rishonim_category_tree = build_rishonim_category_tree(rishonim_with_books)
-    return render_template('search_by_rishon_home.html', category_tree=rishonim_category_tree, rishonim=rishonim_with_books)
+    return render_template('search_by_rishon_home.html', category_tree=rishonim, rishonim=rishonim_with_books)
 
 @search_by_rishon_bp.route('search_by_rishon/search')
 def search_by_rishon():

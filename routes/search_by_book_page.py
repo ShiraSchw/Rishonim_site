@@ -1,7 +1,6 @@
+import httpx
 from flask import Blueprint, render_template, request, jsonify
-
-from routes.web_function import build_category_tree
-from supabase_client import supabase
+from supabase_client import supabase, KEY_TABLE
 import os
 
 search_by_book_bp = Blueprint('search_by_book', __name__)
@@ -39,35 +38,26 @@ def search_by_book():
     path = request.args.get('category', '')
     parts = path.strip('/').split('/')  # למשל: ["category", "sub", "subsub"]
 
-    # יצירת תנאים דינמיים לפי מספר החלקים בנתיב
-    filters = []
+    query = supabase.table("Categories").select("id")
+
     if len(parts) >= 1:
-        filters.append(f"category.eq.{parts[0]}")
+        query = query.eq("category", parts[0])
     if len(parts) >= 2:
-        filters.append(f"sub_category.eq.{parts[1]}")
-    if len(parts) == 3:
-        filters.append(f"sub_sub_category.eq.{parts[2]}")
+        query = query.eq("sub_category", parts[1])
+    if len(parts) >= 3:
+        query = query.eq("sub_sub_category", parts[2])
 
-    filter_query = '&'.join(filters)
-
-    # שליפת category_id לפי הנתיב
-    url = f"https://{SUPABASE_PROJECT_ID}.supabase.co/rest/v1/Categories?select=id&{filter_query}"
-    headers = {
-        "apikey": SUPABASE_API_KEY,
-        "Authorization": f"Bearer {SUPABASE_API_KEY}"
-    }
-
-    response = httpx.get(url, headers=headers)
-    response.raise_for_status()
-    categories = response.json()
+    res = query.execute()
+    categories = res.data
 
     if not categories:
         return jsonify([])
 
     category_id = categories[0]['id']
 
-    # שליפת ספרים עם category_id מתאים
-    books = supabase.table("Books").select("*").eq("category_id", category_id).execute().data
+    # שליפת ספרים
+    books_res = supabase.table("Books").select("*").eq("category_id", category_id).execute()
+    books = books_res.data
 
     if not books:
         return jsonify([])
