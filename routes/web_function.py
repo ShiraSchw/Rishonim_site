@@ -1,22 +1,15 @@
-from collections import defaultdict
 
+def build_category_tree(flat_categories):
+    tree = {}
+    for cat in flat_categories:
+        main = cat['main_category']
+        sub = cat['sub_category']
+        sub_sub = cat.get('sub_sub_category', '')
 
-def build_rishonim_category_tree(rishonim):
-    tree = lambda: defaultdict(tree)
-    root = tree()
+        tree.setdefault(main, {})
+        tree[main].setdefault(sub, {})
 
-    for r in rishonim:
-        main = r['main_category']
-        sub = r['sub_category']
-        sub_sub = r['sub_sub_category']
-        sub_sub_sub = r.get('sub_sub_sub_category', None)
+        if sub_sub:
+            tree[main][sub][sub_sub] = {}
 
-        if sub_sub_sub:
-            root[main][sub][sub_sub][sub_sub_sub] = {}
-        else:
-            root[main][sub][sub_sub] = {}
-
-    def convert(d):
-        return {k: convert(v) if isinstance(v, defaultdict) else v for k, v in d.items()}
-
-    return convert(root)
+    return tree
