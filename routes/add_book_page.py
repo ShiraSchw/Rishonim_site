@@ -25,8 +25,8 @@ def add_book():
 
     # שליפת אפשרויות לרשימות הנפתחות
     try:
-        categories = supabase.table('"Categories"').select("*").execute().data
-        rishonim = supabase.table('"Rishonim"').select("*").execute().data
+        categories = supabase.table('Categories').select("*").execute().data
+        rishonim = supabase.table('Rishonim').select("*").execute().data
         logging.basicConfig(level=logging.INFO)
         logging.info("הגעתי לפה!!")
 
