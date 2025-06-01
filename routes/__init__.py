@@ -10,7 +10,7 @@ app_routes = Blueprint('app_routes', __name__)
 app_routes.register_blueprint(home_bp)
 app_routes.register_blueprint(search_by_book_bp)
 app_routes.register_blueprint(search_by_rishon_bp)
-app.register_blueprint(search_by_beit_midrash_bp)
+app_routes.register_blueprint(search_by_beit_midrash_bp)
 app_routes.register_blueprint(add_book_bp)
 
 
