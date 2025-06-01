@@ -18,14 +18,19 @@
   {% endfor %}
 </select>
 
+<button id="search-button" class="btn">חפש</button>
+
 <div id="results-container"></div>
 
 <script>
   const select = document.getElementById("rishon-select");
+  const searchButton = document.getElementById("search-button");
   const resultsContainer = document.getElementById("results-container");
 
-  select.addEventListener("change", () => {
+  searchButton.addEventListener("click", () => {
     const id = select.value;
+    if (!id) return;
+
     fetch(`/search_by_rishon/search?rishon_id=${id}`)
       .then(res => res.json())
       .then(data => {
@@ -49,5 +54,6 @@
       });
   });
 </script>
+
 </body>
 </html>

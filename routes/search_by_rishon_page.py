@@ -7,9 +7,8 @@ search_by_rishon_bp = Blueprint('search_by_rishon', __name__)
 logging.basicConfig(level=logging.INFO)
 
 # דף הבית עם עץ קטגוריות
-@search_by_rishon_bp.route('/search_by_book')
+@search_by_rishon_bp.route('/search_by_rishon')
 def search_by_rishon_home():
-    logging.info("bhjbhjbjk")
     # שליפת כל הראשונים (name + full_name)
     rishonim = supabase.table("Rishonim").select("id, name, full_name").order("name", desc=False).execute().data
 
