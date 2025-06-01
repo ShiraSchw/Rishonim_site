@@ -3,6 +3,7 @@ from supabase_client import supabase
 import logging
 
 add_book_bp = Blueprint('add_book', __name__)
+logging.basicConfig(level=logging.INFO)
 
 @add_book_bp.route('/add_book', methods=['GET', 'POST'])
 def add_book():
@@ -27,14 +28,12 @@ def add_book():
     try:
         categories = supabase.table('Categories').select("*").execute().data
         rishonim = supabase.table('Rishonim').select("*").execute().data
-        logging.basicConfig(level=logging.INFO)
-        logging.info("הגעתי לפה!!")
 
-        logging.basicConfig(level=logging.INFO)
-        logging.info("ראשונים:", len(rishonim), rishonim)
+        logging.info("הגעתי לפה!!")
+        logging.info(f"ראשונים: {len(rishonim)} {rishonim}")
 
     except Exception as e:
-        logging.basicConfig(level=logging.INFO)
+
         logging.info("הגעתי לפה באסה!!")
         print("שגיאה בשליפת קטגוריות או ראשונים:", e)
         categories = []
