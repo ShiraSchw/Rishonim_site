@@ -41,7 +41,7 @@
       const id = select.value;
       if (!id) return;
 
-      fetch("{{ url_for('search_by_rishon.search_by_rishon') }}" + "?rishon_id=" + encodeURIComponent(id))
+      fetch("{{ url_for('app_routes.search_by_rishon.search_by_rishon') }}" + "?rishon_id=" + encodeURIComponent(id))
         .then(res => res.json())
         .then(data => {
           resultsContainer.innerHTML = '';
