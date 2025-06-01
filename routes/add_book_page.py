@@ -8,12 +8,14 @@ logging.basicConfig(level=logging.INFO)
 @add_book_bp.route('/add_book', methods=['GET', 'POST'])
 def add_book():
     if request.method == 'POST':
+        id = len(supabase.table('Books').select("*").execute().data)+1
         category_id = request.form.get('category_id')
         rishon_id = request.form.get('rishon_id')
         book_name = request.form.get('book_name')
         publication_place = request.form.get('publication_place')
 
         supabase.table('Books').insert({
+            "id" : id,
             "category_id": category_id,
             "rishon_id": rishon_id,
             "book_name": book_name,
