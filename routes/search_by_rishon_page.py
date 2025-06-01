@@ -1,12 +1,16 @@
 from flask import Blueprint, render_template, request, jsonify
-from supabase_client import supabase, KEY_TABLE
-import os
+from pandas.io.formats.info import INFO_DOCSTRING
+
+from supabase_client import supabase
+import logging
 
 search_by_rishon_bp = Blueprint('search_by_rishon', __name__)
+logging.basicConfig(level=logging.INFO)
 
 # דף הבית עם עץ קטגוריות
 @search_by_rishon_bp.route('/search_by_book')
 def search_by_rishon_home():
+    logging.log(INFO_DOCSTRING,"rr")
     # שליפת כל הראשונים (name + full_name)
     rishonim = supabase.table("Rishonim").select("id, name, full_name").order("name", desc=False).execute().data
 

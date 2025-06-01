@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <title>חיפוש לפי בית מדרש</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<a href="{{ url_for('app_routes.home.home') }}" class="btn">← חזרה לדף הבית</a>
+<h1>בחר בית מדרש</h1>
+
+<select id="beit-midrash-select">
+  <option disabled selected>בחר בית מדרש</option>
+  {% for b in beit_midrash_list %}
+    <option value="{{ b }}">{{ b }}</option>
+  {% endfor %}
+</select>
+
+<button id="search-button" class="btn">חפש</button>
+
+<div id="results-container"></div>
+
+<script>
+  const select = document.getElementById("beit-midrash-select");
+  const searchButton = document.getElementById("search-button");
+  const resultsContainer = document.getElementById("results-container");
+
+  searchButton.addEventListener("click", () => {
+    const b = select.value;
+    if (!b) return;
+
+    fetch(`/search_by_beit_midrash/search?beit_midrash=${encodeURIComponent(b)}`)
+      .then(res => res.json())
+      .then(data => {
+        resultsContainer.innerHTML = '';
+        if (data.length === 0) {
+          resultsContainer.innerHTML = '<p>לא נמצאו ספרים</p>';
+        } else {
+          data.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'rishon-card';
+            card.innerHTML = `
+              <div class="title">${item.book_name}</div>
+              ${item.name ? `<div><strong>ראשון:</strong> ${item.name}</div>` : ''}
+              ${item.full_name ? `<div><strong>שם מלא:</strong> ${item.full_name}</div>` : ''}
+              ${item.beit_midrash ? `<div><strong>בית מדרש:</strong> ${item.beit_midrash}</div>` : ''}
+              ${item.publication_place ? `<div><strong>מקום פרסום:</strong> ${item.publication_place}</div>` : ''}
+            `;
+            resultsContainer.appendChild(card);
+          });
+        }
+      });
+  });
+</script>
+</body>
+</html>
