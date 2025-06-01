@@ -1,50 +1,67 @@
-from flask import Blueprint, render_template, jsonify, request
-import json
-
-from routes.constants import DATA_FILE, RISHONIM_FILE
-from routes.web_function import build_rishonim_category_tree
+from flask import Blueprint, render_template, request, jsonify
+from supabase_client import supabase
+import os
 
 search_by_book_bp = Blueprint('search_by_book', __name__)
 
+# דף הבית עם עץ קטגוריות
 @search_by_book_bp.route('/search_by_book')
 def search_by_book_home():
-    with open(DATA_FILE, encoding="utf-8") as f:
-        rishonim_with_books = json.load(f)
+    # שליפת כל הקטגוריות
+    categories = supabase.table("Category").select("*").execute().data
 
-    # קריאה ל־rishonim.json
-    with open(RISHONIM_FILE, encoding="utf-8") as f:
-        rishonim_list = json.load(f)
+    # בניית עץ קטגוריות בפורמט מתאים
+    category_tree = {}
+    for cat in categories:
+        caterory = cat['caterory']
+        sub_caterory = cat.get('sub_caterory', '')
+        sub_sub_caterory = cat.get('sub_sub_caterory', '')
+        pointer = category_tree.setdefault(caterory, {})
+        if sub_caterory:
+            pointer = pointer.setdefault(sub_caterory, {})
+        if sub_sub_caterory:
+            pointer = pointer.setdefault(sub_sub_caterory, {})
 
-    # הוספת כינוי ואזור לכל ראשון
-    for r in rishonim_with_books:
-        name = r.get("author_name", "")
-        r.update(rishonim_list.get(name, {"fullname": "", "region": ""}))
+    return render_template('search_by_book_home.html', category_tree=category_tree)
 
-    rishonim_category_tree = build_rishonim_category_tree(rishonim_with_books)
-    return render_template('search_by_book_home.html', category_tree=rishonim_category_tree, rishonim=rishonim_with_books)
-
-@search_by_book_bp.route('search_by_book/search')
+# שליפת תוצאות לפי נתיב קטגוריה
+@search_by_book_bp.route('/search_by_book/search')
 def search_by_book():
-    with open(DATA_FILE, encoding="utf-8") as f:
-        rishonim = json.load(f)
+    path = request.args.get('category', '')
+    parts = path.split('/')
 
-    with open(RISHONIM_FILE, encoding="utf-8") as f:
-        rishonim_extra = json.load(f)
+    # שליפת הקטגוריה המתאימה כדי לדעת את ה-id
+    categories = supabase.table("Category").select("*").execute().data
+    category_id = None
+    for cat in categories:
+        if [
+            cat['caterory'],
+            cat.get('sub_caterory', ''),
+            cat.get('sub_sub_category', ''),
+        ][:len(parts)] == parts:
+            category_id = cat['id']
+            break
 
-    category_path = request.args.get('category', '')
-    path_parts = category_path.split('/')
+    if category_id is None:
+        return jsonify([])
 
-    filtered = []
-    for r in rishonim:
-        cat_path = [
-            r['main_category'],
-            r['sub_category'],
-            r['sub_sub_category'],
-            r.get('sub_sub_sub_category', '')
-        ]
-        if path_parts == cat_path[:len(path_parts)]:
-            enriched = r.copy()
-            enriched.update(rishonim_extra.get(r.get("author_name", ""), {"fullname": "", "region": ""}))
-            filtered.append(enriched)
+    # שליפת ספרים מתאימים
+    books = supabase.table("Books").select("*").eq("category_id", category_id).execute().data()
 
-    return jsonify(filtered)
+    # שליפת רשימת כל הראשונים (לפי id)
+    rishon_ids = list(set(book['rishon_id'] for book in books if book.get('rishon_id')))
+    rishon_query = supabase.table("Rishonim").select("*").in_("id", rishon_ids).execute()
+    rishon_map = {r['id']: r for r in rishon_query.data}
+
+    results = []
+    for book in books:
+        rishon = rishon_map.get(book.get('rishon_id'), {})
+        results.append({
+            "book_name": book.get("book_name", ""),
+            "publication_place": book.get("publication_place", ""),
+            "name": rishon.get("name", ""),
+            "full_name": rishon.get("full_name", ""),
+            "beit_midrash": rishon.get("beit_midrash", "")
+        })
+
+    return jsonify(results)

@@ -72,18 +72,18 @@
         if (data.length === 0) {
           resultsContainer.innerHTML = '<p>לא נמצאו ראשונים</p>';
         } else {
-		  data.forEach(rishon => {
+		  data.forEach(item => {
 		    const card = document.createElement('div');
 		    card.className = 'rishon-card';
 		    card.innerHTML = `
-			  <div class="title">${rishon.book_name}</div>
-			  <div><strong>שם:</strong> ${rishon.author_name}</div>
-			  ${rishon.author_fullname ? `<div><strong>כינוי:</strong> (${rishon.fullname})</div>` : ''}
-			  ${rishon.region ? `<div><strong>אזור:</strong> ${rishon.region}</div>` : ''}
-			  ${rishon.publication ? `<div><strong>פרסום:</strong> ${rishon.publication}</div>` : ''}
+			  <div class="title">${item.book_name}</div>
+			  ${item.name ? `<div><strong>שם ראשון:</strong> ${item.name}</div>` : ''}
+			  ${item.full_name ? `<div><strong>כינוי:</strong> ${item.full_name}</div>` : ''}
+			  ${item.beit_midrash ? `<div><strong>בית מדרש:</strong> ${item.beit_midrash}</div>` : ''}
+			  ${item.publication_place ? `<div><strong>מקום פרסום:</strong> ${item.publication_place}</div>` : ''}
 		    `;
 		    resultsContainer.appendChild(card);
-          });
+		  });
         }
       });
   });
