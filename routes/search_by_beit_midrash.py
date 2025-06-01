@@ -1,77 +1,36 @@
 from flask import Blueprint, render_template, request, jsonify
-from supabase_client import supabase, KEY_TABLE
-import os
+from supabase_client import supabase
 
-search_by_rishon_bp = Blueprint('search_by_rishon', __name__)
+search_by_beit_midrash_bp = Blueprint("search_by_beit_midrash", __name__)
 
-# דף הבית עם עץ קטגוריות
-@search_by_rishon_bp.route('/search_by_book')
-def search_by_rishon_home():
-    # שליפת כל הקטגוריות מהטבלה
-    categories = supabase.table("Categories").select("*").execute().data
+@search_by_beit_midrash_bp.route('/search_by_beit_midrash')
+def search_by_beit_midrash_home():
+    # שליפת כל בתי המדרש הייחודיים מהטבלה
+    response = supabase.table("Rishonim").select("beit_midrash").execute()
+    data = response.data
+    beit_midrash_list = sorted(set(r['beit_midrash'] for r in data if r['beit_midrash']))
+    return render_template("search_by_beit_midrash_home.html", beit_midrash_list=beit_midrash_list)
 
-    # בניית עץ הקטגוריות
-    category_tree = {}
-    for row in categories:
-        cat = row.get("category")
-        sub = row.get("sub_category")
-        subsub = row.get("sub_sub_category")
-
-        if not cat:
-            continue
-
-        category_tree.setdefault(cat, {})
-
-        if sub:
-            category_tree[cat].setdefault(sub, {})
-
-            if subsub:
-                category_tree[cat][sub].setdefault(subsub, {})
-
-    return render_template("search_by_rishon_home.html", category_tree=category_tree)
-
-
-# שליפת תוצאות לפי נתיב קטגוריה
-@search_by_rishon_bp.route('/search_by_rishon/search')
-def search_by_rishon():
-    path = request.args.get('category', '')
-    parts = path.strip('/').split('/')  # למשל: ["category", "sub", "subsub"]
-
-    query = supabase.table("Categories").select("id")
-
-    if len(parts) >= 1:
-        query = query.eq("category", parts[0])
-    if len(parts) >= 2:
-        query = query.eq("sub_category", parts[1])
-    if len(parts) >= 3:
-        query = query.eq("sub_sub_category", parts[2])
-
-    res = query.execute()
-    categories = res.data
-
-    if not categories:
+@search_by_beit_midrash_bp.route('/search_by_beit_midrash/search')
+def search_by_beit_midrash():
+    beit_midrash = request.args.get("beit_midrash")
+    if not beit_midrash:
         return jsonify([])
 
-    category_id = categories[0]['id']
+    # שליפת כל הראשונים מבית המדרש הזה
+    rishonim_res = supabase.table("Rishonim").select("*").eq("beit_midrash", beit_midrash).execute()
+    rishonim = rishonim_res.data
+    rishon_map = {r['id']: r for r in rishonim}
+    rishon_ids = list(rishon_map.keys())
 
-    # שליפת ספרים
-    books_res = supabase.table("Books").select("*").eq("category_id", category_id).execute()
+    # שליפת כל הספרים של אותם ראשונים
+    books_res = supabase.table("Books").select("*").in_("rishon_id", rishon_ids).execute()
     books = books_res.data
-
-    if not books:
-        return jsonify([])
-
-    # שליפת כל הראשונים הרלוונטיים לפי rishon_id
-    rishon_ids = list(set(book['rishon_id'] for book in books if book.get('rishon_id')))
-    rishon_map = {}
-    if rishon_ids:
-        rishon_query = supabase.table('Rishonim').select("*").in_("id", rishon_ids).execute()
-        rishon_map = {r['id']: r for r in rishon_query.data}
 
     # בניית התוצאה
     results = []
     for book in books:
-        rishon = rishon_map.get(book.get('rishon_id'), {})
+        rishon = rishon_map.get(book.get("rishon_id"), {})
         results.append({
             "book_name": book.get("book_name", ""),
             "publication_place": book.get("publication_place", ""),
