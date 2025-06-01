@@ -9,8 +9,8 @@ search_by_rishon_bp = Blueprint('search_by_rishon', __name__)
 def search_by_rishon_home():
     def search_by_rishon_home():
         # שליפת כל הראשונים (name + full_name)
-        res = supabase.table("Rishonim").select("id, name, full_name").order("name", desc=False).execute()
-        rishonim = res.data
+        rishonim = supabase.table("Rishonim").select("id, name, full_name").order("name", desc=False).execute().data
+
         return render_template("search_by_rishon_home.html", rishonim=rishonim)
 
 
