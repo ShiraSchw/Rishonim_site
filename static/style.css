@@ -1,193 +1,119 @@
+/* בסיס */
 body {
   font-family: 'Assistant', sans-serif;
-  background-color: #f7f9fc;
+  background-color: #FAF4EF;
   direction: rtl;
   margin: 0;
-  padding: 0;
+  padding: 20px;
+  color: #3A3A3C;
+  text-align: right;
 }
 
+/* כותרות */
+h1, h2 {
+  text-align: center;
+  color: #A05A2C;
+  margin-bottom: 1.5rem;
+}
+
+/* מבנה כללי */
 .container {
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem;
 }
 
-h1, h2 {
-  text-align: center;
-  color: #003366;
-}
-
-.card {
-  background-color: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+/* כרטיסים */
+.card, .rishon-card {
+  background-color: #FFFFFFE6; /* לבן עם שקיפות */
+  border-radius: 0px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   padding: 1.5rem;
   margin: 1rem 0;
+  transition: transform 0.2s;
+}
+.rishon-card:hover {
+  transform: scale(1.01);
 }
 
+/* כותרת בתוך כרטיס */
+.rishon-card .title {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-bottom: 8px;
+  color: #A05A2C;
+}
+
+/* תוויות */
 label {
   display: block;
   margin-top: 1rem;
-  color: #003366;
   font-weight: bold;
+  color: #A05A2C;
 }
 
+/* טפסים */
 input[type="text"], select {
   width: 100%;
   padding: 0.75rem;
   margin-top: 0.25rem;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-}
-
-button {
-  background-color: #0056b3;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 12px;
-  margin-top: 1.5rem;
-  cursor: pointer;
+  border: 1px solid #CCC;
+  border-radius: 4px;
+  background-color: #FFF8F4;
   font-size: 1rem;
 }
 
-button:hover {
-  background-color: #003d80;
+/* כפתורים */
+button, .btn {
+  background: rgba(255, 182, 185, 0.85);
+  color: #3A3A3C;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 0px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  font-weight: bold;
 }
 
+button:hover, .btn:hover {
+  background: rgba(255, 154, 139, 0.95);
+  transform: scale(1.02);
+}
+
+/* קישור חזור */
 .back-link {
   display: inline-block;
   margin-top: 2rem;
   text-decoration: none;
-  color: #0056b3;
+  color: #A05A2C;
   font-weight: bold;
 }
-
 .back-link:hover {
   text-decoration: underline;
 }
 
+/* בלוק קטגוריה */
 .category-block {
   margin: 1.5rem 0;
   padding: 1rem;
-  background-color: #ffffff;
-  border-radius: 12px;
-  border: 1px solid #d0d7e2;
+  background-color: #FFFFFFE6;
+  border: 1px solid #E0DAD5;
+  border-radius: 4px;
 }
-
 .category-title {
   font-weight: bold;
-  color: #002f5c;
+  color: #A05A2C;
   margin-bottom: 0.5rem;
 }
 
-.subcategories {
-  margin-right: 1rem;
-}
-
-.btn {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background-color: #0056b3
-  color: white;
-  text-decoration: none;
-  border-radius: 12px;
-  font-weight: bold;
-}
-.btn:hover {
-  background-color: #0056b3;
-}
-
+/* הודעות */
 .flash-messages {
   list-style: none;
   padding: 10px;
-  background-color: #fffae6;
-  border: 1px solid #ffc107;
-  color: #333;
+  background-color: #FFF4E5;
+  border: 1px solid #FFC89E;
+  color: #5C3B1C;
   margin-bottom: 20px;
-  border-radius: 8px;
+  border-radius: 4px;
 }
-
-.rishon-card {
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  padding: 16px;
-  margin: 12px 0;
-  background-color: #f7f7f7;
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
-  direction: rtl;
-}
-.rishon-card .title {
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-bottom: 8px;
-}
-
-body {
-  font-family: "Arial", sans-serif;
-  background: #f4f4f9;
-  direction: rtl;
-  text-align: right;
-  padding: 20px;
-  color: #333;
-}
-
-h1 {
-  color: #4a4a8a;
-  margin-bottom: 20px;
-}
-
-.btn {
-  display: inline-block;
-  margin: 10px 5px;
-  padding: 10px 15px;
-  background-color: #4a4a8a;
-  color: white;
-  text-decoration: none;
-  border-radius: 10px;
-  font-weight: bold;
-}
-
-select {
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-}
-
-button#search-button {
-  background-color: #4a4a8a;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-button#search-button:hover {
-  background-color: #36366a;
-}
-
-.rishon-card {
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  margin: 20px 0;
-  padding: 15px;
-  transition: transform 0.2s;
-}
-
-.rishon-card:hover {
-  transform: scale(1.02);
-}
-
-.rishon-card .title {
-  font-weight: bold;
-  font-size: 20px;
-  margin-bottom: 10px;
-  color: #4a4a8a;
-}
-
-
