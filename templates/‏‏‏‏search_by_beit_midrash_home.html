@@ -1,32 +1,19 @@
-<!DOCTYPE html>
-<html lang="he">
-<head>
-  <meta charset="UTF-8">
-  <title>חיפוש לפי בית מדרש</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-<a href="{{ url_for('app_routes.home.home') }}" class="btn">← חזרה לדף הבית</a>
-<h1>בחר בית מדרש</h1>
-
-<select id="beit-midrash-select">
-  <option disabled selected>בחר בית מדרש</option>
-  {% for b in beit_midrash_list %}
-    <option value="{{ b }}">{{ b }}</option>
-  {% endfor %}
-</select>
-
-<button id="search-button" style="display: none;">חפש</button>
-
-<div id="results-container"></div>
-
 <script>
   const select = document.getElementById("beit-midrash-select");
   const searchButton = document.getElementById("search-button");
   const resultsContainer = document.getElementById("results-container");
-  
-  searchBtn.style.display = 'inline-block';
 
+  // בתחילה הכפתור מוסתר
+  searchButton.style.display = 'none';
+
+  // כשנבחר בית מדרש – הכפתור יוצג
+  select.addEventListener("change", () => {
+    if (select.value) {
+      searchButton.style.display = 'inline-block';
+    }
+  });
+
+  // פעולה בעת לחיצה על חיפוש
   searchButton.addEventListener("click", () => {
     const b = select.value;
     if (!b) return;
@@ -54,5 +41,3 @@
       });
   });
 </script>
-</body>
-</html>

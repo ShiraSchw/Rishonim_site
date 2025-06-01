@@ -6,56 +6,63 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<a href="{{ url_for('app_routes.home.home') }}" class="btn">← חזרה לדף הבית</a>
-<h1>בחר ראשון</h1>
+  <a href="{{ url_for('app_routes.home.home') }}" class="btn">← חזרה לדף הבית</a>
+  <h1>בחר ראשון</h1>
 
-<select id="rishon-select">
-  <option disabled selected>בחר ראשון</option>
-  {% for rishon in rishonim %}
-    <option value="{{ rishon.id }}">
-      {{ rishon.name }}{% if rishon.full_name %} ({{ rishon.full_name }}){% endif %}
-    </option>
-  {% endfor %}
-</select>
+  <select id="rishon-select">
+    <option disabled selected>בחר ראשון</option>
+    {% for rishon in rishonim %}
+      <option value="{{ rishon.id }}">
+        {{ rishon.name }}{% if rishon.full_name %} ({{ rishon.full_name }}){% endif %}
+      </option>
+    {% endfor %}
+  </select>
 
-<button id="search-button" style="display: none;">חפש</button>
+  <button id="search-button" style="display: none;">חפש</button>
 
-<div id="results-container"></div>
+  <div id="results-container"></div>
 
-<script>
-  const select = document.getElementById("rishon-select");
-  const searchButton = document.getElementById("search-button");
-  const resultsContainer = document.getElementById("results-container");
-  
-  searchBtn.style.display = 'inline-block';
+  <script>
+    const select = document.getElementById("rishon-select");
+    const searchButton = document.getElementById("search-button");
+    const resultsContainer = document.getElementById("results-container");
 
-  searchButton.addEventListener("click", () => {
-    const id = select.value;
-    if (!id) return;
+    // בתחילה מוסתר
+    searchButton.style.display = 'none';
 
-    fetch(`/search_by_rishon/search?rishon_id=${id}`)
-      .then(res => res.json())
-      .then(data => {
-        resultsContainer.innerHTML = '';
-        if (data.length === 0) {
-          resultsContainer.innerHTML = '<p>לא נמצאו ספרים</p>';
-        } else {
-          data.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'rishon-card';
-            card.innerHTML = `
-              <div class="title">${item.book_name}</div>
-              ${item.name ? `<div><strong>ראשון:</strong> ${item.name}</div>` : ''}
-              ${item.full_name ? `<div><strong>שם מלא:</strong> ${item.full_name}</div>` : ''}
-              ${item.beit_midrash ? `<div><strong>בית מדרש:</strong> ${item.beit_midrash}</div>` : ''}
-              ${item.publication_place ? `<div><strong>מקום פרסום:</strong> ${item.publication_place}</div>` : ''}
-            `;
-            resultsContainer.appendChild(card);
-          });
-        }
-      });
-  });
-</script>
+    // כשהמשתמש בוחר ערך – הצג את הכפתור
+    select.addEventListener("change", () => {
+      if (select.value) {
+        searchButton.style.display = 'inline-block';
+      }
+    });
 
+    searchButton.addEventListener("click", () => {
+      const id = select.value;
+      if (!id) return;
+
+      fetch(`/search_by_rishon/search?rishon_id=${id}`)
+        .then(res => res.json())
+        .then(data => {
+          resultsContainer.innerHTML = '';
+          if (data.length === 0) {
+            resultsContainer.innerHTML = '<p>לא נמצאו ספרים</p>';
+          } else {
+            data.forEach(item => {
+              const card = document.createElement('div');
+              card.className = 'rishon-card';
+              card.innerHTML = `
+                <div class="title">${item.book_name}</div>
+                ${item.name ? `<div><strong>ראשון:</strong> ${item.name}</div>` : ''}
+                ${item.full_name ? `<div><strong>שם מלא:</strong> ${item.full_name}</div>` : ''}
+                ${item.beit_midrash ? `<div><strong>בית מדרש:</strong> ${item.beit_midrash}</div>` : ''}
+                ${item.publication_place ? `<div><strong>מקום פרסום:</strong> ${item.publication_place}</div>` : ''}
+              `;
+              resultsContainer.appendChild(card);
+            });
+          }
+        });
+    });
+  </script>
 </body>
 </html>

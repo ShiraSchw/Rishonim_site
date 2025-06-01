@@ -1,18 +1,23 @@
 /* בסיס */
 body {
   font-family: 'Assistant', sans-serif;
-  background-color: #FAF4EF;
+  background-image: url("/static/background_rishonim.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center;
   direction: rtl;
   margin: 0;
   padding: 20px;
-  color: #3A3A3C;
+  color: #2F2F2F;
   text-align: right;
+  backdrop-filter: brightness(0.95);
 }
 
 /* כותרות */
 h1, h2 {
   text-align: center;
-  color: #A05A2C;
+  color: #4A3B2D; /* חום כהה */
   margin-bottom: 1.5rem;
 }
 
@@ -25,23 +30,23 @@ h1, h2 {
 
 /* כרטיסים */
 .card, .rishon-card {
-  background-color: #FFFFFFE6; /* לבן עם שקיפות */
-  border-radius: 0px;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   padding: 1.5rem;
   margin: 1rem 0;
   transition: transform 0.2s;
 }
 .rishon-card:hover {
-  transform: scale(1.01);
+  transform: scale(1.02);
 }
 
 /* כותרת בתוך כרטיס */
 .rishon-card .title {
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 1.3em;
   margin-bottom: 8px;
-  color: #A05A2C;
+  color: #305473; /* כחול כהה */
 }
 
 /* תוויות */
@@ -49,7 +54,7 @@ label {
   display: block;
   margin-top: 1rem;
   font-weight: bold;
-  color: #A05A2C;
+  color: #4A3B2D;
 }
 
 /* טפסים */
@@ -58,27 +63,27 @@ input[type="text"], select {
   padding: 0.75rem;
   margin-top: 0.25rem;
   border: 1px solid #CCC;
-  border-radius: 4px;
-  background-color: #FFF8F4;
+  border-radius: 6px;
+  background-color: #F7F5F2;
   font-size: 1rem;
 }
 
 /* כפתורים */
 button, .btn {
-  background: rgba(255, 182, 185, 0.85);
-  color: #3A3A3C;
+  background: #A1785C; /* חום חם */
+  color: white;
   border: none;
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
-  border-radius: 0px;
+  border-radius: 6px;
   cursor: pointer;
   transition: background 0.3s, transform 0.2s;
   font-weight: bold;
 }
 
 button:hover, .btn:hover {
-  background: rgba(255, 154, 139, 0.95);
-  transform: scale(1.02);
+  background: #7C5A41; /* כהה יותר */
+  transform: scale(1.03);
 }
 
 /* קישור חזור */
@@ -86,7 +91,7 @@ button:hover, .btn:hover {
   display: inline-block;
   margin-top: 2rem;
   text-decoration: none;
-  color: #A05A2C;
+  color: #4A3B2D;
   font-weight: bold;
 }
 .back-link:hover {
@@ -97,13 +102,13 @@ button:hover, .btn:hover {
 .category-block {
   margin: 1.5rem 0;
   padding: 1rem;
-  background-color: #FFFFFFE6;
-  border: 1px solid #E0DAD5;
-  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.85);
+  border: 1px solid #D5D0C6;
+  border-radius: 8px;
 }
 .category-title {
   font-weight: bold;
-  color: #A05A2C;
+  color: #305473;
   margin-bottom: 0.5rem;
 }
 
@@ -111,9 +116,9 @@ button:hover, .btn:hover {
 .flash-messages {
   list-style: none;
   padding: 10px;
-  background-color: #FFF4E5;
-  border: 1px solid #FFC89E;
-  color: #5C3B1C;
+  background-color: #E3EBF2;
+  border: 1px solid #AEC8D7;
+  color: #2F4858;
   margin-bottom: 20px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
