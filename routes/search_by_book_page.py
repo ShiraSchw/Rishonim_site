@@ -29,7 +29,7 @@ def search_by_book_home():
             if subsub:
                 category_tree[cat][sub].append(subsub)
 
-    return render_template("search_by_book.html", category_tree=category_tree)
+    return render_template("search_by_book_home.html", category_tree=category_tree)
 
 
 # שליפת תוצאות לפי נתיב קטגוריה
