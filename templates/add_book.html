@@ -16,9 +16,12 @@
   </select>
 
   <label>ראשון:</label>
-  <select name="rishon_id" required>
-    {% for r in rishonim %}
-      <option value="{{ r.id }}">{{ r.name }} - {{ r.full_name }}</option>
+  <select id="rishon-select">
+    <option disabled selected>בחר ראשון</option>
+    {% for rishon in rishonim %}
+      <option value="{{ rishon.id }}">
+        {{ rishon.name }}{% if rishon.full_name %} ({{ rishon.full_name }}){% endif %}
+      </option>
     {% endfor %}
   </select>
 
