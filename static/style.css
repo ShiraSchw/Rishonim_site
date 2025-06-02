@@ -4,6 +4,7 @@
 /* רקע מלא בעמוד הבית */
 
 body.home-page {
+  font-family: 'Assistant', sans-serif;
   background-image: url("/static/images/background_books.jpg");
   background-size: cover;
   background-position: center;
@@ -20,6 +21,39 @@ body.home-page .overlay {
   padding: 40px 20px;
   color: white;
   text-align: center;
+  direction: rtl;
+  text-align: right;
+}
+
+body.inner-page {
+  font-family: 'Assistant', sans-serif;
+  background-color: #f8f5ef;  /* רקע בהיר ונעים */
+  background-image: url("/static/images/background_books.jpg");
+  background-size: 250px auto;         /* התמונה קטנה, לא משתלטת */
+  background-repeat: no-repeat;
+  background-position: bottom left;   /* מיקום עדין */
+  background-attachment: scroll;
+  background-blend-mode: lighten;     /* שילוב עדין */
+  direction: rtl;
+  text-align: right;
+  position: relative;
+}
+
+body.inner-page::before {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background-image: url("/static/images/background_books.jpg");
+  background-size: 300px auto;
+  background-repeat: no-repeat;
+  background-position: bottom left;
+  opacity: 0.1; /* מאוד עדין */
+  pointer-events: none;
+  z-index: 0;
+}
+body.inner-page > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* שיפור נראות של כפתורים וטקסט */
@@ -37,18 +71,6 @@ body.home-page .overlay {
 
 .button-container a.btn:hover {
   background-color: #f0f0f0;
-}
-
-
-/* רקע מרומז בעמודים פנימיים */
-body.inner-page {
-  background-color: #f3f0e8;
-  background-image: url("/static/images/background_books.jpg");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: top right;
-  background-blend-mode: lighten;
-  background-attachment: scroll;
 }
 
 /* מסגרת לתוכן הראשי */
