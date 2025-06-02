@@ -1,12 +1,64 @@
 /* בסיס */
-body {
-  font-family: 'Assistant', sans-serif;
-  background-color: #F3F0E8;
-  direction: rtl;
+/* static/styles.css */
+
+/* רקע מלא בעמוד הבית */
+
+body.home-page {
+  background-image: url("/static/images/background_books.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   margin: 0;
-  padding: 20px;
-  color: #2D3A4A;
-  text-align: right;
+  min-height: 100vh;
+  position: relative;
+}
+
+body.home-page .overlay {
+  background-color: rgba(0, 0, 0, 0.5); /* שכבת כהות */
+  min-height: 100vh;
+  padding: 40px 20px;
+  color: white;
+  text-align: center;
+}
+
+/* שיפור נראות של כפתורים וטקסט */
+.button-container a.btn {
+  background-color: #ffffffdd;
+  color: #333;
+  border: none;
+  padding: 12px 24px;
+  margin: 10px;
+  border-radius: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.button-container a.btn:hover {
+  background-color: #f0f0f0;
+}
+
+
+/* רקע מרומז בעמודים פנימיים */
+body.inner-page {
+  background-color: #f3f0e8;
+  background-image: url("/static/images/background_books.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top right;
+  background-blend-mode: lighten;
+  background-attachment: scroll;
+}
+
+/* מסגרת לתוכן הראשי */
+.main-content {
+  background-color: rgba(255, 255, 255, 0.9);
+  margin: 3rem auto;
+  max-width: 960px;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 /* כותרות */
