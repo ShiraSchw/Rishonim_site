@@ -1,18 +1,18 @@
 /* בסיס */
 body {
   font-family: 'Assistant', sans-serif;
-  background-color: #f0eee9; /* צבע רקע בהיר בגוון חום-ירוק עתיק */
+  background-color: #CECE8E;
   direction: rtl;
   margin: 0;
   padding: 20px;
-  color: #3a3a33; /* חום-ירוק כהה */
+  color: #3a3a33;
   text-align: right;
 }
 
 /* כותרות */
 h1, h2 {
   text-align: center;
-  color: #4a5039; /* חום ירקרק כהה */
+  color: #6B201A;
   margin-bottom: 1.5rem;
 }
 
@@ -25,17 +25,17 @@ h1, h2 {
 
 /* כרטיסים */
 .card, .rishon-card {
-  background-color: rgba(240, 240, 230, 0.9); /* רקע בהיר ויפה */
-  border-radius: 6px; /* פחות מעוגל */
-  box-shadow: 0 3px 10px rgba(50, 50, 40, 0.1);
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  box-shadow: 0 3px 12px rgba(107, 32, 26, 0.1);
   padding: 1.5rem;
   margin: 1rem 0;
   transition: transform 0.15s ease-in-out;
-  border: 1px solid rgba(124, 90, 65, 0.15); /* מסגרת דקה ושקופה */
+  border: 1px solid rgba(145, 177, 140, 0.4);
 }
 .rishon-card:hover {
   transform: scale(1.03);
-  border-color: rgba(124, 90, 65, 0.35);
+  border-color: rgba(145, 177, 140, 0.7);
 }
 
 /* כותרת בתוך כרטיס */
@@ -43,7 +43,7 @@ h1, h2 {
   font-weight: 700;
   font-size: 1.4em;
   margin-bottom: 10px;
-  color: #39585a; /* כחול-ירוק כהה */
+  color: #0E3D43;
 }
 
 /* תוויות */
@@ -51,7 +51,7 @@ label {
   display: block;
   margin-top: 1rem;
   font-weight: 600;
-  color: #4a5039;
+  color: #6B201A;
 }
 
 /* טפסים */
@@ -59,30 +59,31 @@ input[type="text"], select {
   width: 100%;
   padding: 0.6rem;
   margin-top: 0.25rem;
-  border: 1px solid #a3b09e;
+  border: 1px solid #91B18C;
   border-radius: 4px;
   background-color: #faf9f5;
   font-size: 1rem;
   color: #3a3a33;
 }
 
-/* כפתורים - שקופים ופינות חדות */
+/* כפתורים */
 button, .btn {
-  background: rgba(161, 120, 92, 0.25); /* חום חם שקוף יותר */
-  color: #4a5039;
-  border: 1px solid rgba(161, 120, 92, 0.3); /* מסגרת דקה ושקופה */
-  padding: 0.6rem 1.4rem;
-  font-size: 1rem;
-  border-radius: 0; /* פינות חדות */
+  background: rgba(248, 152, 6, 0.85);
+  color: white;
+  border: 1px solid rgba(248, 152, 6, 1);
+  padding: 0.7rem 1.6rem;
+  font-size: 1.1rem;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: 700;
-  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 button:hover, .btn:hover {
-  background: rgba(124, 90, 65, 0.45);
-  border-color: rgba(124, 90, 65, 0.7);
+  background: #6B201A;
+  border-color: #6B201A;
   color: #fff;
+  transform: translateY(-2px);
 }
 
 /* קישור חזור */
@@ -90,7 +91,7 @@ button:hover, .btn:hover {
   display: inline-block;
   margin-top: 2rem;
   text-decoration: none;
-  color: #4a5039;
+  color: #6B201A;
   font-weight: 700;
 }
 .back-link:hover {
@@ -101,13 +102,13 @@ button:hover, .btn:hover {
 .category-block {
   margin: 1.5rem 0;
   padding: 1rem;
-  background-color: rgba(240, 240, 230, 0.9);
-  border: 1px solid #a3b09e;
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid #91B18C;
   border-radius: 6px;
 }
 .category-title {
   font-weight: 700;
-  color: #39585a;
+  color: #0E3D43;
   margin-bottom: 0.5rem;
 }
 
@@ -115,12 +116,13 @@ button:hover, .btn:hover {
 .flash-messages {
   list-style: none;
   padding: 10px;
-  background-color: #dde6e1;
-  border: 1px solid #aec6bb;
-  color: #2f4843;
+  background-color: #EAEFD8;
+  border: 1px solid #91B18C;
+  color: #6B201A;
   margin-bottom: 20px;
   border-radius: 6px;
 }
+
 /* מרכז ומגדיל את הכפתורים אחרי הכותרת */
 .button-container {
   display: flex;
@@ -137,4 +139,15 @@ button:hover, .btn:hover {
   text-align: center;
   font-size: 1.2rem;
   padding: 1rem;
+}
+.navbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 1px 5px rgba(107, 32, 26, 0.1);
 }
