@@ -9,11 +9,8 @@
 {% include "navbar.html" %}
 <form method="POST">
   <label>קטגוריה:</label>
-  <select name="category_id" required>
-    {% for cat in categories %}
-      <option value="{{ cat.id }}">{{ cat.category }}{% if cat.sub_category %} / {{ cat.sub_category }}{% endif %}{% if cat.sub_sub_category %} / {{ cat.sub_sub_category }}{% endif %}</option>
-    {% endfor %}
-  </select>
+  <div id="category-container"></div>
+  <input type="hidden" name="category_id" id="category_id" required>
 
   <label>ראשון:</label>
   <select id="rishon-select">
@@ -33,4 +30,52 @@
 
   <button type="submit">הוסף ספר</button>
 </form>
+<script>
+  const categoryTree = {{ category_tree | tojson }};
+  let selectedPath = [];
+  const container = document.getElementById('category-container');
+  const categoryIdInput = document.getElementById('category_id');
+
+  function createSelect(levelData, levelIndex) {
+    const selects = container.querySelectorAll('select');
+    selects.forEach((sel, i) => {
+      if (i >= levelIndex) sel.remove();
+    });
+
+    const select = document.createElement('select');
+    select.innerHTML = '<option disabled selected>בחר</option>';
+    for (const key in levelData) {
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = key;
+      select.appendChild(opt);
+    }
+    container.appendChild(select);
+
+    select.addEventListener('change', () => {
+      selectedPath = Array.from(container.querySelectorAll('select')).map(sel => sel.value);
+      const currentLevel = selectedPath.reduce((obj, key) => obj?.[key], categoryTree);
+
+      if (typeof currentLevel === 'object' && Object.keys(currentLevel).length > 0) {
+        createSelect(currentLevel, levelIndex + 1);
+        categoryIdInput.value = ""; // לא קטגוריה סופית עדיין
+      } else {
+        // קטגוריה סופית → שלוף את ID מהשרת
+        const path = selectedPath.join('/');
+        fetch(`/get_category_id?path=${encodeURIComponent(path)}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.category_id) {
+              categoryIdInput.value = data.category_id;
+            } else {
+              categoryIdInput.value = "";
+            }
+          });
+      }
+    });
+  }
+
+  createSelect(categoryTree, 0);
+</script>
+
 <body>

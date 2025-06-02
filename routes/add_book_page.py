@@ -33,4 +33,42 @@ def add_book():
         categories = []
         rishonim = []
 
-    return render_template('add_book.html', categories=categories, rishonim=rishonim)
+    # בניית עץ קטגוריות
+    category_tree = {}
+    for row in categories:
+        cat = row.get("category")
+        sub = row.get("sub_category")
+        subsub = row.get("sub_sub_category")
+
+        if not cat:
+            continue
+
+        category_tree.setdefault(cat, {})
+
+        if sub:
+            category_tree[cat].setdefault(sub, {})
+
+            if subsub:
+                category_tree[cat][sub].setdefault(subsub, {})
+
+    return render_template('add_book.html', category_tree=category_tree, rishonim=rishonim)
+
+@add_book_bp.route('/add_book/get_category_id')
+def get_category_id():
+    path = request.args.get('path', '')
+    parts = path.strip('/').split('/')
+
+    query = supabase.table("Categories").select("id")
+
+    if len(parts) >= 1:
+        query = query.eq("category", parts[0])
+    if len(parts) >= 2:
+        query = query.eq("sub_category", parts[1])
+    if len(parts) >= 3:
+        query = query.eq("sub_sub_category", parts[2])
+
+    res = query.execute()
+    if res.data:
+        return jsonify({"category_id": res.data[0]['id']})
+    return jsonify({"category_id": None})
+
