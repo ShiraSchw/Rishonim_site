@@ -29,9 +29,9 @@ body.inner-page {
   font-family: 'Assistant', sans-serif;
   background-color: #f8f5ef;  /* רקע בהיר ונעים */
   background-image: url("/static/images/background_books.jpg");
-  background-size: 250px auto;         /* התמונה קטנה, לא משתלטת */
+  background-size: cover;
   background-repeat: no-repeat;
-  background-position: bottom left;   /* מיקום עדין */
+  background-position: center;
   background-attachment: scroll;
   background-blend-mode: lighten;     /* שילוב עדין */
   direction: rtl;
