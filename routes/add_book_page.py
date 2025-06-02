@@ -27,7 +27,7 @@ def add_book():
     # שליפת אפשרויות לרשימות הנפתחות
     try:
         categories = supabase.table('Categories').select("*").execute().data
-        rishonim = supabase.table('Rishonim').select("*").execute().data
+        rishonim = supabase.table("Rishonim").select("id, name, full_name").order("name", desc=False).execute().data
 
     except Exception as e:
         categories = []
