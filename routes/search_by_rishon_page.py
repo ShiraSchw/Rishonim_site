@@ -39,7 +39,7 @@ def search_by_rishon():
 
     return jsonify(results)
 
-@search_by_rishon_bp.route('search_by_rishon/search/update_publication_place/<book_id>', methods=['POST'])
+@search_by_rishon_bp.route('/search_by_rishon/search/update_publication_place/<book_id>', methods=['POST'])
 def update_publication_place(book_id):
     data = request.json
     new_place = data.get('publication_place', '')
