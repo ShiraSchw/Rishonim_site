@@ -2,7 +2,6 @@
 /* static/styles.css */
 
 /* רקע מלא בעמוד הבית */
-
 body.home-page {
   font-family: 'Assistant', sans-serif;
   background-image: url("/static/images/background_books.jpg");
@@ -25,15 +24,16 @@ body.home-page .overlay {
   text-align: right;
 }
 
+/* רקע לעמודים פנימיים */
 body.inner-page {
   font-family: 'Assistant', sans-serif;
-  background-color: #f8f5ef;  /* רקע בהיר ונעים */
+  background-color: #f8f5ef;
   background-image: url("/static/images/background_books.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: scroll;
-  background-blend-mode: lighten;     /* שילוב עדין */
+  background-blend-mode: lighten;
   direction: rtl;
   text-align: right;
   position: relative;
@@ -41,16 +41,21 @@ body.inner-page {
 
 body.inner-page::before {
   content: "";
-  position: absolute;
-  top: 0; right: 0; bottom: 0; left: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-image: url("/static/images/background_books.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.1; /* מאוד עדין */
-  pointer-events: none;
-  z-index: 0;
+  background-color: rgba(255, 255, 255, 0.4);
+  background-blend-mode: lighten;
+  opacity: 0.3;
+  z-index: -1;
 }
+
 body.inner-page > * {
   position: relative;
   z-index: 1;
@@ -73,9 +78,11 @@ body.inner-page > * {
   background-color: #f0f0f0;
 }
 
-/* מסגרת לתוכן הראשי */
+/* מסגרת לתוכן הראשי עם טשטוש */
 .main-content {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   margin: 3rem auto;
   max-width: 960px;
   padding: 2rem;
@@ -104,14 +111,18 @@ body.inner-page h1, h2 {
   padding: 2rem;
 }
 
-/* כרטיסים */
+/* כרטיסים עם אפקט זכוכית */
 .card, .rishon-card {
-  background-color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   padding: 1.5rem;
   margin: 1rem 0;
   border: 1px solid #A68B6B;
+  border-radius: 16px;
 }
+
 .rishon-card:hover {
   transform: scale(1.02);
   border-color: #6E4B3A;
@@ -229,11 +240,9 @@ button:hover, .btn:hover {
   text-decoration: none;
   font-weight: bold;
   padding: 0.5rem 1rem;
-  text-decoration: none;
 }
 .navbar a:hover {
   text-decoration: underline;
-  text-decoration: none;
 }
 
 .card-actions {
@@ -242,6 +251,7 @@ button:hover, .btn:hover {
   justify-content: flex-end;
   gap: 10px;
 }
+
 .edit-publication-place {
   cursor: pointer;
   margin-right: 5px;
@@ -255,4 +265,3 @@ button:hover, .btn:hover {
 .publication-place-input {
   margin-right: 5px;
 }
-
