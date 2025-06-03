@@ -270,7 +270,7 @@ button:hover, .btn:hover {
 .site-description {
   background-color: rgba(255, 255, 255, 0.75);
   padding: 2rem;
-  margin: 2rem auto;
+  margin: 0.8rem auto;
   max-width: 1000px;
   border-radius: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -284,12 +284,13 @@ button:hover, .btn:hover {
 .site-description h2 {
   font-size: 1.8rem;
   color: #3B3B3B;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
   text-align: center;
 }
 
 .site-description p {
   font-size: 1.1rem;
   color: #333;
+  margin-bottom: 0.8rem;
 }
 
