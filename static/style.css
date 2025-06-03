@@ -84,14 +84,14 @@ body.inner-page > * {
 }
 
 /* כותרות */
-h1 {
+body.home-page h1, h2 {
   text-align: center;
   color: #EFEAD9;
   font-weight: 600;
   margin-bottom: 20px;
 }
 
-h2 {
+body.inner-page h1, h2 {
   text-align: center;
   color: #2D3A4A;
   margin-bottom: 1.5rem;
