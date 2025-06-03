@@ -84,7 +84,13 @@ body.inner-page > * {
 }
 
 /* כותרות */
-h1, h2 {
+h1 {
+  color: #34495e;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+h2 {
   text-align: center;
   color: #2D3A4A;
   margin-bottom: 1.5rem;
