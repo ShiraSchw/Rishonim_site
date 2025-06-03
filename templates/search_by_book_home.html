@@ -18,6 +18,7 @@
 <div id="results-container"></div>
 
 <script>
+  const updatePublicationPlaceUrlTemplate = "{{ url_for('search_by_rishon.update_publication_place', book_id='__BOOK_ID__') }}";
   const categoryTree = {{ category_tree | tojson }};
   let selectedPath = [];
 
@@ -112,8 +113,9 @@
 
 	  if (e.target.classList.contains('save-publication-place')) {
 		const newPlace = card.querySelector('.publication-place-input').value;
-
-		fetch(`/update_publication_place/${id}`, {
+		
+		const url = updatePublicationPlaceUrlTemplate.replace('__BOOK_ID__', id);
+		fetch(url, {
 		  method: 'POST',
 		  headers: {'Content-Type': 'application/json'},
 		  body: JSON.stringify({ publication_place: newPlace })

@@ -22,6 +22,7 @@
 <div id="results-container"></div>
 
 <script>
+  const url = updatePublicationPlaceUrlTemplate.replace('__BOOK_ID__', id);
   const select = document.getElementById("beit-midrash-select");
   const searchButton = document.getElementById("search-button");
   const resultsContainer = document.getElementById("results-container");
@@ -89,7 +90,8 @@
 	  if (e.target.classList.contains('save-publication-place')) {
 		const newPlace = card.querySelector('.publication-place-input').value;
 
-		fetch(`/update_publication_place/${id}`, {
+		const url = updatePublicationPlaceUrlTemplate.replace('__BOOK_ID__', id);
+		fetch(url, {
 		  method: 'POST',
 		  headers: {'Content-Type': 'application/json'},
 		  body: JSON.stringify({ publication_place: newPlace })
