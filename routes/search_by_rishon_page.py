@@ -38,3 +38,13 @@ def search_by_rishon():
         })
 
     return jsonify(results)
+
+@search_by_rishon_bp.route('search_by_rishon/search/update_publication_place/<book_id>', methods=['POST'])
+def update_publication_place(book_id):
+    data = request.json
+    new_place = data.get('publication_place', '')
+    try:
+        supabase.table("books").update({"publication_place": new_place}).eq("id", book_id).execute()
+        return jsonify({"success": True})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)})

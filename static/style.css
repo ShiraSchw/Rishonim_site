@@ -235,3 +235,24 @@ button:hover, .btn:hover {
   text-decoration: underline;
   text-decoration: none;
 }
+
+.card-actions {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.edit-publication-place {
+  cursor: pointer;
+  margin-right: 5px;
+  color: #5a463a;
+}
+
+.edit-publication-place:hover {
+  color: #0077cc;
+}
+
+.publication-place-input {
+  margin-right: 5px;
+}
+

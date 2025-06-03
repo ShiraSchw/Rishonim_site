@@ -51,18 +51,65 @@
           data.forEach(item => {
             const card = document.createElement('div');
             card.className = 'rishon-card';
-            card.innerHTML = `
-              <div class="title">${item.book_name}</div>
-              ${item.name ? `<div><strong>ראשון:</strong> ${item.name}</div>` : ''}
-              ${item.full_name ? `<div><strong>שם מלא:</strong> ${item.full_name}</div>` : ''}
-              ${item.beit_midrash ? `<div><strong>בית מדרש:</strong> ${item.beit_midrash}</div>` : ''}
-              ${item.publication_place ? `<div><strong>מקום פרסום:</strong> ${item.publication_place}</div>` : ''}
-            `;
+			card.innerHTML = `
+			  <div class="title">${item.book_name}</div>
+			  ${item.name ? `<div><strong>ראשון:</strong> ${item.name}</div>` : ''}
+			  ${item.full_name ? `<div><strong>שם מלא:</strong> ${item.full_name}</div>` : ''}
+			  ${item.beit_midrash ? `<div><strong>בית מדרש:</strong> ${item.beit_midrash}</div>` : ''}
+			  ${item.publication_place ? `
+				<div>
+				  <strong>מקום פרסום:</strong> 
+				  <span class="publication-place-text">${item.publication_place}</span>
+				  <input class="publication-place-input" type="text" value="${item.publication_place}" style="display:none;">
+				  <button class="save-publication-place" data-id="${item.id}" style="display:none;">שמור</button>
+				  <span class="edit-publication-place" data-id="${item.id}" title="ערוך">&#9998;</span>
+				</div>` : ''}
+		    `;
             resultsContainer.appendChild(card);
           });
         }
       });
   });
+  
+   resultsContainer.addEventListener('click', function (e) {
+	  const card = e.target.closest('.rishon-card');
+	  const id = e.target.dataset.id;
+
+	  if (e.target.classList.contains('edit-publication-place')) {
+		const textSpan = card.querySelector('.publication-place-text');
+		const input = card.querySelector('.publication-place-input');
+		const saveBtn = card.querySelector('.save-publication-place');
+
+		textSpan.style.display = 'none';
+		input.style.display = 'inline-block';
+		saveBtn.style.display = 'inline-block';
+		input.focus();
+	  }
+
+	  if (e.target.classList.contains('save-publication-place')) {
+		const newPlace = card.querySelector('.publication-place-input').value;
+
+		fetch(`/update_publication_place/${id}`, {
+		  method: 'POST',
+		  headers: {'Content-Type': 'application/json'},
+		  body: JSON.stringify({ publication_place: newPlace })
+		}).then(res => res.json()).then(data => {
+		  if (data.success) {
+			const textSpan = card.querySelector('.publication-place-text');
+			const input = card.querySelector('.publication-place-input');
+			const saveBtn = card.querySelector('.save-publication-place');
+
+			textSpan.textContent = newPlace;
+			textSpan.style.display = 'inline';
+			input.style.display = 'none';
+			saveBtn.style.display = 'none';
+		  } else {
+			alert("שגיאה בשמירה");
+		  }
+		});
+	  }
+	});
+
 </script>
 </body>
 </html>
