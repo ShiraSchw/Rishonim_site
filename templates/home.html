@@ -8,6 +8,13 @@
 <body class="home-page">
 <div class="overlay">
   {% include "navbar.html" %}
+  <div class="site-description">
+  <h2>ברוכים הבאים לאתר "כתבי היד של הראשונים"</h2>
+  <p>
+    כאן תוכלו לחפש, להוסיף ולמצוא מידע מדעי על כתבי הראשונים השונים. האתר מציג מידע עשיר על כתבי הראשונים, כולל בית המדרש בו הם פעלו, תחום הכתיבה, ומקום פרסום הספרים.
+    מטרתנו היא לאפשר גישה נוחה לכתבי יד אלו ולהנגיש את הידע לדור הבא של הלומדים והחוקרים.
+  </p>
+  </div>
   <h1>איך ברצונך לחפש?</h1>
   <div class="button-container">
     <a href="{{ url_for('app_routes.search_by_book.search_by_book_home') }}" class="btn">חיפוש לפי ספר</a>
