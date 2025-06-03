@@ -41,7 +41,7 @@ def search_by_beit_midrash():
 
     return jsonify(results)
 
-@search_by_beit_midrash_bp.route('/search_by_beit_midrash/search/update_publication_place/<book_id>', methods=['POST'])
+@search_by_beit_midrash_bp.route('/search_by_beit_midrash/update_publication_place/<book_id>', methods=['POST'])
 def update_publication_place(book_id):
     data = request.json
     new_place = data.get('publication_place', '')
