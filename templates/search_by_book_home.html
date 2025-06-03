@@ -18,7 +18,7 @@
 <div id="results-container"></div>
 
 <script>
-  const updatePublicationPlaceUrlTemplate = "{{ url_for('search_by_rishon.update_publication_place', book_id='__BOOK_ID__') }}";
+  const updatePublicationPlaceUrlTemplate = "{{ url_for('app_routes.search_by_book.search.update_publication_place', book_id='__BOOK_ID__') }}";
   const categoryTree = {{ category_tree | tojson }};
   let selectedPath = [];
 
@@ -95,7 +95,6 @@
         }
       });
   });
-  
      resultsContainer.addEventListener('click', function (e) {
 	  const card = e.target.closest('.rishon-card');
 	  const id = e.target.dataset.id;

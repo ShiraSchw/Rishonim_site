@@ -22,7 +22,7 @@
 <div id="results-container"></div>
 
 <script>
-  const url = updatePublicationPlaceUrlTemplate.replace('__BOOK_ID__', id);
+  const updatePublicationPlaceUrlTemplate = "{{ url_for('app_routes.search_by_beit_midrash.search.update_publication_place', book_id='__BOOK_ID__') }}";
   const select = document.getElementById("beit-midrash-select");
   const searchButton = document.getElementById("search-button");
   const resultsContainer = document.getElementById("results-container");
