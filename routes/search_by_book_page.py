@@ -72,6 +72,7 @@ def search_by_book():
     for book in books:
         rishon = rishon_map.get(book.get('rishon_id'), {})
         results.append({
+            "id": book.get("id", ""),
             "book_name": book.get("book_name", ""),
             "publication_place": book.get("publication_place", ""),
             "name": rishon.get("name", ""),
@@ -81,7 +82,7 @@ def search_by_book():
 
     return jsonify(results)
 
-@search_by_book_bp.route('/search_by_book/update_publication_place/<book_id>', methods=['POST'])
+@search_by_book_bp.route('/search_by_book/update_publication_place/<int:book_id>', methods=['POST'])
 def update_publication_place(book_id):
     data = request.json
     new_place = data.get('publication_place', '')
