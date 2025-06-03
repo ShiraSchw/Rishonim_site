@@ -72,7 +72,7 @@ def search_by_book():
     for book in books:
         rishon = rishon_map.get(book.get('rishon_id'), {})
         results.append({
-            "id": book.get("id", ""),
+            "book_id": book.get("id", ""),
             "book_name": book.get("book_name", ""),
             "publication_place": book.get("publication_place", ""),
             "name": rishon.get("name", ""),

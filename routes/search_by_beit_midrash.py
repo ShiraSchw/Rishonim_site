@@ -32,6 +32,7 @@ def search_by_beit_midrash():
     for book in books:
         rishon = rishon_map.get(book.get("rishon_id"), {})
         results.append({
+            "book_id": book.get("id", ""),
             "book_name": book.get("book_name", ""),
             "publication_place": book.get("publication_place", ""),
             "name": rishon.get("name", ""),
@@ -41,7 +42,7 @@ def search_by_beit_midrash():
 
     return jsonify(results)
 
-@search_by_beit_midrash_bp.route('/search_by_beit_midrash/update_publication_place/<book_id>', methods=['POST'])
+@search_by_beit_midrash_bp.route('/search_by_beit_midrash/update_publication_place/<int:book_id>', methods=['POST'])
 def update_publication_place(book_id):
     data = request.json
     new_place = data.get('publication_place', '')

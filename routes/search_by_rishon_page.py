@@ -30,6 +30,7 @@ def search_by_rishon():
     results = []
     for book in books:
         results.append({
+            "book_id": book.get("id", ""),
             "book_name": book.get("book_name", ""),
             "publication_place": book.get("publication_place", ""),
             "name": rishon.get("name", ""),
@@ -39,7 +40,7 @@ def search_by_rishon():
 
     return jsonify(results)
 
-@search_by_rishon_bp.route('/search_by_rishon/update_publication_place/<book_id>', methods=['POST'])
+@search_by_rishon_bp.route('/search_by_rishon/update_publication_place/<int:book_id>', methods=['POST'])
 def update_publication_place(book_id):
     data = request.json
     new_place = data.get('publication_place', '')
