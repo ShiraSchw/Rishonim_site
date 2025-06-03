@@ -44,9 +44,9 @@ body.inner-page::before {
   position: absolute;
   top: 0; right: 0; bottom: 0; left: 0;
   background-image: url("/static/images/background_books.jpg");
-  background-size: 300px auto;
+  background-size: cover;
   background-repeat: no-repeat;
-  background-position: bottom left;
+  background-position: center;
   opacity: 0.1; /* מאוד עדין */
   pointer-events: none;
   z-index: 0;
