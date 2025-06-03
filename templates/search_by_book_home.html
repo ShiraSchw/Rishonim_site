@@ -18,7 +18,7 @@
 <div id="results-container"></div>
 
 <script>
-  const updatePublicationPlaceUrlTemplate = "{{ url_for('app_routes.search_by_book.update_publication_place', book_id='__BOOK_ID__') }}";
+  const updatePublicationPlaceUrlBase = "{{ url_for('app_routes.search_by_book.update_publication_place', book_id=0).replace('/0', '/') }}";
   const categoryTree = {{ category_tree | tojson }};
   let selectedPath = [];
 
@@ -113,7 +113,7 @@
 	  if (e.target.classList.contains('save-publication-place')) {
 		const newPlace = card.querySelector('.publication-place-input').value;
 		
-		const url = updatePublicationPlaceUrlTemplate.replace('__BOOK_ID__', id);
+		const url = updatePublicationPlaceUrlBase + id;
 		fetch(url, {
 		  method: 'POST',
 		  headers: {'Content-Type': 'application/json'},
